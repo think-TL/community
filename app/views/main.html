@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Tell the browser to be responsive to screen width -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<!-- Bootstrap 3.3.6 -->
+<link
+	href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	rel="stylesheet">
+	<!-- Latest compiled and minified CSS -->
+<link href="http://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link
+	href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"
+	rel="stylesheet">
+<!-- Ionicons -->
+<link href="http://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css"
+	rel="stylesheet">
+<!-- Theme style -->
+<link href="http://cdn.bootcss.com/admin-lte/2.3.6/css/AdminLTE.min.css"
+	rel="stylesheet">
+<!-- datatable -->
+<link
+	href="http://cdn.bootcss.com/datatables/1.10.12/css/jquery.dataTables.min.css"
+	rel="stylesheet">
+<!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+		        page. However, you can choose any other skin. Make sure you
+		        apply the skin class to the body tag so the changes take effect.
+		  -->
+<link href="http://cdn.bootcss.com/admin-lte/2.3.6/css/skins/skin-blue.min.css" rel="stylesheet">
+
+	<!-- bootstrap-datetimepicker -->
+<link href="../../public/stylesheets/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+
+<!-- zTree -->
+<link href="http://cdn.bootcss.com/zTree.v3/3.5.27/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+		  <script src="http://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  		　<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+		  <![endif]-->
+<title>社区资源管理</title>
+<link rel="stylesheet" media="screen"
+	href="@{'/public/stylesheets/main.css'}">
+#{get 'moreStyles' /}
+<link rel="shortcut icon" type="image/png"
+	href="/public/images/favicon.png">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+		<!-- Main Header -->
+		<header class="main-header">
+			<!-- Logo -->
+			<a href="http://www.lianmaiba.com" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
+				<span class="logo-mini"><b>社区</b></span> <!-- logo for regular state and mobile devices -->
+				<span class="logo-lg"><b>社区资源管理</b></span>
+			</a>
+
+			<!-- Header Navbar -->
+			<nav class="navbar navbar-static-top" role="navigation">
+				<!-- Sidebar toggle button-->
+				<a href="#" class="sidebar-toggle" data-toggle="offcanvas"
+					role="button"> <span class="sr-only">Toggle navigation</span>
+				</a>
+				<!-- Navbar Right Menu  -->
+				<div class="navbar-custom-menu">
+					<ul class="nav navbar-nav">
+						<!-- User Account Menu -->
+						<li class="dropdown user user-menu">
+							<!-- Menu Toggle Button --> <a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"> <!-- The user image in the navbar-->
+								<img src="/public/images/exit.png" class="user-image"
+								alt="User Image"> <!-- hidden-xs hides the username on small devices so only the image appears. -->
+								<span class="hidden-xs">退出</span>
+						</a>
+							<ul class="dropdown-menu">
+								<!-- The user image in the menu -->
+								<li class="user-header"><img
+									src="/public/images/favicon.png" class="img-circle"
+									alt="User Image">
+
+									<p>社区资源管理</p></li>
+								<!-- Menu Body -->
+								<!-- Menu Footer-->
+								<li class="user-footer">
+									<!-- <div class="pull-left">
+										<a href="#" class="btn btn-default btn-flat">个人详情</a>
+									</div>-->
+									<div class="pull-right">
+										<a href="/b/loginmgr/exit"
+											class="btn btn-default btn-flat">退出</a>
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<!-- Left side column. contains the logo and sidebar -->
+		<aside class="main-sidebar">
+
+			<!-- sidebar: style can be found in sidebar.less -->
+			<section class="sidebar">
+				<ul class="sidebar-menu">
+						<li class="header">管理员菜单列表</li>
+				#{list items:permissionList, as:'p1'}
+					#{if p1.permission_id =='0'}
+						<li class="treeview" id="treeview_${p1.id}">
+								<a href="#">
+										 <i class="${p1.img}"></i>
+										<span>${p1.name}</span>
+										<span class="pull-right-container">
+											<i class="fa fa-angle-left pull-right"></i>
+										</span>
+								</a>
+					<ul class="treeview-menu" id="menu_${p1.id}">
+					#{/if}
+					#{list items:permissionList, as:'p2'}
+						#{if p1.id == p2.permission_id}
+							<li id="${p2.activeflag}"  >
+							#{if "27" == p2.id ||"28" == p2.id}
+									<a href="${p2.url}" target="_blank">
+							#{/if}
+							#{else}
+									<a href="${p2.url}">
+							#{/else}
+										 <i class="fa fa-circle-o"></i>
+										${p2.name}
+								</a>
+							</li>
+						#{/if}
+					#{/list}
+					#{if p1.permission_id =='0'}
+					</ul>
+						</li>
+					#{/if}
+				#{/list}
+				</ul>
+			</section>
+		</aside>
+		#{doLayout /}
+		
+	</div>
+	<!-- REQUIRED JS SCRIPTS -->
+	<!-- jQuery 2.2.3 -->
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<!-- Bootstrap 3.3.6 -->
+	<script
+		src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+<script src="http://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+<!-- Latest compiled and minified Locales -->
+<script src="http://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="http://cdn.bootcss.com/admin-lte/2.3.6/js/app.min.js"></script>
+	<!-- datatable -->
+	<script
+		src="http://cdn.bootcss.com/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+		
+	<!-- bootstrap-datetimepicker -->
+	<script src="../../public/javascripts/bootstrap-datetimepicker.min.js"></script>
+	<script src="../../public/javascripts/bootstrap-datetimepicker.zh-CN.js"></script>
+	
+	
+	<!-- zTree -->
+	<script src="http://cdn.bootcss.com/zTree.v3/3.5.28/js/jquery.ztree.core.js"></script>
+	<script src="http://cdn.bootcss.com/zTree.v3/3.5.27/js/jquery.ztree.excheck.js"></script>
+	
+	<script type="text/javascript">
+		/**
+		 * 重写确认框 fun:函数对象 params:参数列表， 可以是数组
+		 */
+		function confirm(content,url) {
+		    if ($("#myConfirm").length > 0) {
+		        $("#myConfirm").remove();
+		    } 
+		    var html = "<div class='modal fade' id='myConfirm' >"
+		            + "<div class='modal-backdrop in' style='opacity:0; '></div>"
+		            + "<div class='modal-dialog' style='z-index:2901; margin-top:160px; width:400px; '>"
+		            + "<div class='modal-content'>"
+		            + "<div class='modal-header'  style='font-size:16px; '>"
+		            + "温馨提示<button type='button' class='close' data-dismiss='modal'>"
+		            + "<span style='font-size:20px;  ' class='glyphicon glyphicon-remove'></span><tton></div>"
+		            + "<div class='modal-body text-center' id='myConfirmContent' style='font-size:18px; '>"
+		            +content
+		            + "</div>"
+		            + "<div class='modal-footer ' style=''>"
+		            + "<button class='btn btn-danger ' id='confirmOk' >确定<tton>"
+		            + "<button class='btn btn-info ' data-dismiss='modal'>取消<tton>"
+		            + "</div>" + "</div></div></div>";
+		    $("body").append(html);
+	
+		    $("#myConfirm").modal("show");
+	
+		    $("#confirmOk").on("click", function() {
+		        $("#myConfirm").modal("hide");
+		       	// 用户点击确定
+		       	location.href= url;
+		    });
+		}
+	</script>
+	#{get 'moreScripts' /}
+
+</body>
+</html>

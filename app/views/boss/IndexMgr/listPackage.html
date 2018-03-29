@@ -1,0 +1,247 @@
+#{extends 'boss/IndexMgr/incloudCssJs.html' /}
+<style type="text/css">
+	.full-screen {
+		    margin-left: 0px;
+		}
+</style>
+<!-- 菜单点击状态设置 -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper full-screen">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>渠道管理</h1>
+	</section>
+
+	<!-- Main content -->
+	<div class="panel-body" style="padding-bottom: 0px;">
+		<div class="panel panel-default">
+			<div class="panel-heading">查询条件</div>
+			<div class="panel-body">
+				<form id="formSearch" class="form-horizontal">
+					<div class="form-group" style="margin-top: 15px">
+						<label class="control-label col-sm-2" for="txt_search_pack">分包选择</label>
+						<div class="col-sm-3">
+							<select class="form-control" id="txt_search_pack">
+								<option value="-1">全部</option>
+								#{list items:packList, as:'pack'}
+									<option value="${pack.pack}">${pack.pack}</option> 
+				        		#{/list}
+							</select>
+						</div>
+
+					</div>
+					<div class="form-group" style="margin-top: 15px">
+						<label class="control-label col-sm-2" for="txt_search_starttime">开始时间</label>
+						<div class="col-sm-3">
+							<input type="text"  id="txt_search_starttime" class="txt_search_starttime">
+						</div>
+						
+						<label class="control-label col-sm-2" for="txt_search_starttime">结束时间</label>
+						<div class="col-sm-2">
+							<input type="text"  id="txt_search_endtime" class="txt_search_starttime">
+						</div>
+						
+					</div>
+					<div class="form-group" style="margin-top: 15px">
+
+							<div class="col-sm-2" style="text-align: left;">
+							<button type="button" style="margin-left: 50px" id="btn_query"
+								class="btn btn-primary">查询</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			</div>
+		</div>
+		<table id="t_table" data-content-type="application/x-www-form-urlencoded"></table>
+</div>
+ <!-- 模态框（Modal） -->
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" style="width:1000px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" >
+            	<table id="userDetailData" data-content-type="application/x-www-form-urlencoded"></table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+ <!-- 模态框（Modal） -->
+ <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" style="width:1000px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2"></h4>
+            </div>
+            <div class="modal-body" >
+            	<table id="userDetailData2" data-content-type="application/x-www-form-urlencoded"></table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+ <!-- 模态框（Modal） -->
+ <div class="modal fade" id="myInteractionMsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" style="width:1000px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myInteractionMsgModalLabel"></h4>
+            </div>
+            <div class="modal-body" >
+            	<table id="userInteractionMsgData" data-content-type="application/x-www-form-urlencoded"></table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框（Modal） -->
+ <div class="modal fade" id="mySysMsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" style="width:1000px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="mySysMsgModalLabel"></h4>
+            </div>
+            <div class="modal-body" >
+            	<table id="userSysMsgData" data-content-type="application/x-www-form-urlencoded"></table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="user_id">
+	<!-- /.content-wrapper -->
+	#{set 'moreScripts'}
+	<script type="text/javascript">
+		$(function() {
+
+			//1.初始化Table
+			var oTable = new TableInit();
+			oTable.Init();
+
+			//2.初始化Button的点击事件
+			var oButtonInit = new ButtonInit();
+			oButtonInit.Init();
+
+		});
+
+		var TableInit = function() {
+			var oTableInit = new Object();
+			//初始化Table
+			oTableInit.Init = function() {
+				$('#t_table').bootstrapTable({
+					url : '/b/channelMgr/listPackageData', //请求后台的URL（*）
+					method : 'post', //请求方式（*）
+					toolbar : '#toolbar', //工具按钮用哪个容器
+					striped : true, //是否显示行间隔色
+					cache : false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+					pagination : true, //是否显示分页（*）
+					sortable : false, //是否启用排序
+					sortOrder : "asc", //排序方式
+					queryParams : oTableInit.queryParams,//传递参数（*）
+					sidePagination : "server", //分页方式：client客户端分页，server服务端分页（*）
+					pageNumber : 1, //初始化加载第一页，默认第一页
+					pageSize : 10, //每页的记录行数（*）
+					pageList : [ 10, 20, 30, 50 ], //可供选择的每页的行数（*）
+					search : false, //是否显示表格搜索,只是客户端搜索
+					strictSearch : true,
+					showColumns : true, //是否显示所有的列
+					showRefresh : true, //是否显示刷新按钮
+					minimumCountColumns : 1, //最少允许的列数
+					clickToSelect : true, //是否启用点击选中行
+					height : 600, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+					uniqueId : "ID", //每一行的唯一标识，一般为主键列
+					showToggle : true, //是否显示详细视图和列表视图的切换按钮
+					cardView : false, //是否显示详细视图
+					detailView : false, //是否显示父子表
+					columns : [ {
+						field : 'channel',
+						align: 'center',
+						title : '渠道',
+						formatter: function (value, row, index) {
+			                    return value;
+		                }
+					},{
+						field : 'pack',
+						align: 'center',
+						title : '包名'
+					},{
+						field : 'memo',
+						align: 'center',
+						title : '备注'
+					},{
+						field : 'registertotal',
+						align: 'center',
+						title : '注册量'
+					},{
+						field : 'rechargetotal',
+						align: 'center',
+						title : '充值人民币(元)'
+					},{
+						field : 'itime',
+						align: 'center',
+						title : '时间',
+						formatter: function (value, row, index) {
+							if(value != null){
+			                    return value.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/, "$1-$2-$3 $4:$5:$6");
+							}else{
+								return '-';
+							}
+		                }
+					}]
+				});
+			};
+
+			//得到查询的参数
+			oTableInit.queryParams = function(params) {
+				var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+					limit : params.limit, //页面大小
+					offset : params.offset, //页码
+					userid : $("#txt_search_uid").val(),
+					startTime : $("#txt_search_starttime").val(),
+					endTime : $("#txt_search_endtime").val(),
+					pack : $("#txt_search_pack").val(),
+					channel : $("#txt_search_channel").val()
+				};
+				return temp;
+			};
+			return oTableInit;
+		};
+
+		var ButtonInit = function() {
+			var oInit = new Object();
+			var postdata = {};
+
+			oInit.Init = function() {
+				//初始化页面上面的按钮事件
+				$("#btn_query").click(function() {
+					$('#t_table').bootstrapTable(('refresh')); // 很重要的一步，刷新url！
+				});
+			};
+
+			return oInit;
+		};
+
+
+		// 时间控件
+		$('.txt_search_starttime').datetimepicker({
+			language:  'zh',
+		    format: 'yyyy-mm-dd',
+		    autoclose:true, //当选择一个日期之后是否立即关闭此日期时间选择器。
+		    todayHighlight:true,// 高亮当前日期
+		    todayBtn:"linked",//如果是true的话，"Today" 按钮仅仅将视图转到当天的日期，如果是"linked"，当天日期将会被选中
+		    minView: "month" //  日期时间选择器所能够提供的最精确的时间选择视图
+		});
+
+	</script>
+	#{/set}

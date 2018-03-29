@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>社区资源管理</title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<!-- Bootstrap 3.3.6 -->
+<link
+	href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- Font Awesome -->
+<link
+	href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"
+	rel="stylesheet">
+<!-- Ionicons -->
+<link href="http://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css"
+	rel="stylesheet">
+<!-- Theme style -->
+<link href="http://cdn.bootcss.com/admin-lte/2.3.6/css/AdminLTE.min.css"
+	rel="stylesheet">
+<!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+        page. However, you can choose any other skin. Make sure you
+        apply the skin class to the body tag so the changes take effect.
+  -->
+<link
+	href="http://cdn.bootcss.com/admin-lte/2.3.6/css/skins/skin-blue.min.css"
+	rel="stylesheet">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <script src="http://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+<link rel="shortcut icon" type="image/png"
+	href="/public/images/favicon.png">
+</head>
+<body class="hold-transition" style="background-image: url('${url}');background-repeat: no-repeat;background-position: top center;background-attachment: fixed;background-size: cover;width: 100%!important;height: 100%!important;">
+	<div class="login-box">
+		<div class="login-logo"><img src="/public/images/favicon.png" style="width: 80px;height: 80px"></div>
+		<!-- /.login-logo -->
+		<div class="login-box-body"  style="background-color:rgba(251,251,251,0.3)!important;">
+			<p class="login-box-msg" style="font-size: 28px;color: DodgerBlue;">社区资源管理</p>
+
+			<form action="/b/loginmgr/boss" method="post">
+				<div class="form-group has-feedback">
+					<input type="text" name="username" class="form-control"
+						placeholder="账户名" id="phone"> <span
+						class="glyphicon  glyphicon-magnet form-control-feedback"></span>
+				</div>
+				<div class="form-group has-feedback">
+					<input type="text" name="password" class="form-control"
+						placeholder="密码"> <span
+						class="glyphicon glyphicon-lock form-control-feedback"></span>
+				</div>
+				<div class="row">
+					<!-- /.col -->
+					<div class="col-xs-5">
+						<button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+					</div>
+					<!-- /.col -->
+				</div>
+				<div class="form-group has-feedback">
+					<!-- /.col -->
+					<div style="color: red"  id="msg">
+						<br> ${msg}
+					</div>
+					<!-- /.col -->
+				</div>
+			</form>
+		</div>
+		<!-- /.login-box-body -->
+	</div>
+	<!-- /.login-box -->
+	<!-- jQuery 2.2.3 -->
+	<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+	<!-- Bootstrap 3.3.6 -->
+	<script
+		src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</body>
+</html>

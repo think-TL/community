@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../../public/stylesheets/mui.min.css" rel="stylesheet">
+		<script src="../../../../public/javascripts/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../../public/javascripts/jquery-1.6.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<title></title>
+		<style type="text/css">
+			input[type=text]{
+				padding:0px;
+				border: 0px solid rgba(0,0,0,.2);
+				margin-bottom:0px;
+			}
+			::-webkit-input-placeholder { /* WebKit browsers */
+			    color:    #c8c8c8;
+			}
+			:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+			    color:    #c8c8c8;
+			}
+			::-moz-placeholder { /* Mozilla Firefox 19+ */
+			    color:    #c8c8c8;
+			}
+			:-ms-input-placeholder { /* Internet Explorer 10+ */
+			    color:    #c8c8c8;
+			}
+		</style>
+	</head>
+	<body style="background-color: #FFFFFF;" id="bodyId">
+		<div>
+			<img src="//cdn.lianmaiba.com/mobileFolder/agency_top.jpg" width="100%" />
+		</div>
+		<div align="center" style="width: 100%;margin-top: 2%;"	>
+			<img src="//cdn.lianmaiba.com/mobileFolder/agency_text.png" width="80%"/>
+		</div>
+		<div id="inputDiv" style="background-image: url(//cdn.lianmaiba.com/mobileFolder/agency_input.png);background-repeat: no-repeat;background-size:100% 100%;width: 80%;margin:20px auto 0px auto;">
+			<input id="inputPhone" type="text" placeholder="输入手机号"  oninput="if(value.length&gt;11)value=value.slice(0,11)" style="width: 80%;margin-left: 13%;">
+			<input id="inputCode" type="text" placeholder="输入验证码" style="width: 60%;margin-left: 13%;">
+			
+			<span style="color: #f8128f;font-family: '微软雅黑';font-weight: 300;"  id="codeTime">立即获取</span>
+		</div>
+		<div style="width: 100%;margin-top: 5%;margin-bottom:15%;text-align: center;" >
+			<img src="//cdn.lianmaiba.com/mobileFolder/agency_button.png" id="register" width="50%"/>
+		</div>
+		<input type="hidden" value="${agencyUid}" id="agencyUid" >
+	</body>
+	<script type="text/javascript">
+		(function() {
+			
+			var width = $(window).width();
+			$("#inputDiv").css("height",parseInt(width * 0.8 * 0.4) + "px");
+			
+			$("#inputPhone").css("height",parseInt(width * 0.8 * 0.18) + "px");
+			$("#inputPhone").css("margin-top",parseInt(width * 0.8 * 0.02) + "px");
+			
+			$("#inputCode").css("height",parseInt(width * 0.8 * 0.18) + "px");
+			$("#inputCode").css("margin-top",parseInt(width * 0.8 * 0.01) + "px");
+		})();
+		
+		var codeBoolean = true;
+		var wait=60;  
+		
+		// 获取验证码
+		$("#codeTime").click(function(thisBtn){
+			if(!codeBoolean){
+				return;
+			}
+			
+			// 手机正则判断
+			var reg = /^\d{11}$/;
+			var phone = $("#inputPhone").val();
+			if(!reg.test(phone)){
+				mui.alert("请输入正确手机号码","温馨提醒")
+				return;
+			}
+			$.post("/w/MobileWebMgr/getPhoneCode",{phone:phone},function(strResult){
+				if(strResult == 'success'){
+					time();
+				}else if(strResult == 'register'){
+					mui.alert("你已注册","温馨提醒")
+				}else{
+					mui.alert(strResult,"温馨提醒")
+				}
+			});
+		})
+
+		function time() {  
+			var o = document.getElementById("codeTime");
+	        if (wait == 0) {  
+	            codeBoolean = true;     
+	            o.innerHTML="立即获取";  
+	            wait = 60;  
+	        } else {  
+	            codeBoolean = false;
+	            o.innerHTML="&emsp;&emsp;" + wait ; 
+	            wait--;  
+	            setTimeout(function() {  
+	                time();
+	            },  
+	            1000)  
+	        }  
+	    }
+		
+		// 点击注册按钮
+		$("#register").click(function(){
+			// 获取手机号
+			var phone = $("#inputPhone").val().trim();
+			// 获取验证码
+			var code = $("#inputCode").val().trim();
+			// 获取上级人id
+			var agencyUid = $("#agencyUid").val().trim();
+			
+			if(phone=="" || phone == null || code=="" || code == null){
+				mui.alert("请完善信息","温馨提醒")
+				return;
+			}
+			
+			var b = true;
+			$.post("/w/MobileWebMgr/bindRelation",{phone,code,agencyUid},function(strResult){
+				if(strResult == 'success'){
+					mui.alert("注册成功，点击下载app",function(){
+						var ua = window.navigator.userAgent.toLowerCase(); 
+						if(ua.match(/MicroMessenger/i) == 'micromessenger'){ 
+							if(b){
+								$("#bodyId").prepend('<img src="http://cdn.lianmaiba.com/mobileFolder/mobile_tip.png" width="100%"/>');
+								b = false;
+								location.href="#";
+							}
+						}else{ 
+							//平台、设备和操作系统
+							var system ={
+							win : false,
+							mac : false,
+							xll : false
+							};
+							//检测平台
+							var p = navigator.platform;
+							system.win = p.indexOf("Win") == 0;
+							system.mac = p.indexOf("Mac") == 0;
+							system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+							//跳转语句
+							if(system.win||system.mac||system.xll){
+								alert("请使用手机")
+							}else{
+								if(navigator.platform == "iPhone"){
+									window.location.href = "https://itunes.apple.com/cn/app/%E6%98%A5%E8%81%8A/id1286281953?mt=8";
+			/* 						window.location.href = "itms-services:///?action=download-manifest&url=https://oss-makefriend.oss-cn-shenzhen.aliyuncs.com/mobileFolder/chunliao.plist"; */
+								}else{
+									window.location.href = "http://cdn.lianmaiba.com/chunliao.apk";
+								}
+							}
+						} 
+					})
+				}else{
+					mui.alert(strResult,"温馨提醒")
+				}
+			});
+		});
+</script>
+</html>

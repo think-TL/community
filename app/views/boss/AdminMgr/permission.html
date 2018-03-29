@@ -1,0 +1,68 @@
+ 
+ #{extends 'main.html' /}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>一般管理员的权限分配</h1>
+		<ol class="breadcrumb">
+			<li><a href="#"><i class="fa fa-dashboard"></i>主页</a></li>
+			<li class="active" ><a href="/b/adminmgr/roleAdminMgr">角色管理</a></li>
+			<li class="active">权限分配</li>
+		</ol>
+	</section>
+
+	<!-- Main content -->
+	<div class="panel-body" style="padding-bottom: 0px;">
+	
+			<ul id="treeDemo" class="ztree"></ul>
+			
+			<br>
+			<button id="btn_add" type="button" class="btn btn-info btn-sm rightSize" >
+                   确定
+               </button>
+			
+	</div>
+</div>
+<input type="hidden" id="jsonStr" value="${jsonStr}" >
+<input type="hidden" id="roleId" value="${roleId}" >
+<!-- /.content-wrapper -->
+#{set 'moreScripts'}
+<script type="text/javascript">
+// 给id为xx的元素更改class
+			$("#treeview_3").addClass('active');
+			$("#menu_3").addClass('menu-open');
+			$("#menu_3").attr("style","display: block;");
+			$("#permissionMgr").addClass('active');
+
+	var zTreeObj;
+	// zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+	var setting = {
+			check: {
+				enable: true,
+				nocheckInherit: true
+			}
+		};
+	$(document).ready(function() {
+		var jsonStr = $("#jsonStr").val();
+		jsonStr = eval(jsonStr);
+		zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, jsonStr);
+	});
+	
+	$("#btn_add").click(function(){
+		var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+		var nodes = treeObj.getCheckedNodes(true);
+		var roleId = $("#roleId").val();
+		// 选择的权限id
+		var idStr = "";
+		for(var i = 0; i < nodes.length;i++){
+			// 第一个选择全部的不添加进入
+			if(nodes[i].id != '0'){
+				idStr +=nodes[i].id + ",";
+			}
+		}
+		confirm('确定您的操作','/b/adminmgr/updatePermission?idStr='+idStr+"&roleId="+roleId)
+		
+	})
+</script>
+#{/set}

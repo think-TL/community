@@ -1,0 +1,312 @@
+#{extends 'main.html' /}
+<!-- 菜单点击状态设置 -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>公告管理</h1>
+		<ol class="breadcrumb">
+			<li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+			<li class="active">公告管理</li>
+		</ol>
+	</section>
+
+	<!-- Main content -->
+	<div class="panel-body" style="padding-bottom:0px;">
+		<div class="panel-body" style="padding-bottom: 0px;">
+			<form id="formSearch" class="sidebar-form">
+				<div class="input-group">
+					<input type="text" name="text_search" id = "text_search" class="form-control"
+						placeholder="请输入查找标题"> <span class="input-group-btn">
+						<button type="submit" name="search" id="btn_query"
+							class="btn btn-flat">
+							<i class="fa fa-search"></i>
+						</button>
+					</span>
+				</div>
+			</form>
+		</div>
+		<div id="toolbar" class="btn-group">
+			<button id="btn_add" type="button"
+				class="btn btn-info btn-sm rightSize" data-toggle="modal"
+				data-target="#addModal">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+			</button>
+		</div>
+		<table id="t_table"
+			data-content-type="application/x-www-form-urlencoded"></table>
+	</div>
+
+</div>
+
+<!-- 增加的模态框（Modal） -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true"
+	style="height: 1200px;">
+	<div class="modal-dialog">
+		<div class="modal-content" style="height: 600px;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">增加公告</h4>
+			</div>
+			<div class="modal-body">
+				<form action="/b/notifyMgr/addNotify" id="form-id" method="post">
+					#{authenticityToken /}
+					<div class="form-group">
+						<label for="name">标题</label> <input type="text"
+							class="form-control " name="notice.title" 
+							placeholder="请输入公告标题"> <br>
+						<br>
+						<div class="box box-info">
+							<div class="box-header">
+								<br>
+								<!-- tools box -->
+								<div class="pull-right box-tools">
+									<button type="button" class="btn btn-info btn-sm"
+										data-widget="collapse" data-toggle="tooltip" title="Collapse">
+										<i class="fa fa-minus"></i>
+									</button>
+									<button type="button" class="btn btn-info btn-sm"
+										data-widget="remove" data-toggle="tooltip" title="Remove">
+										<i class="fa fa-times"></i>
+									</button>
+								</div>
+							</div>
+							<div class="box-body pad">
+								<textarea id="editor1" rows="10" cols="70" name="notice.content">
+                   						</textarea>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="confirmOkAdd">确定增加</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 修改的模态框（Modal） -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">修改公告</h4>
+			</div>
+			<div class="modal-body">
+				<form action="/b/notifyMgr/updateNotify" id="form-id-update"
+					method="post">
+					#{authenticityToken /}
+					<div class="form-group">
+						<input type="hidden" id="updateid" name="notice.id" >
+						<label for="name">标题</label> <input type="text"
+							class="form-control " name="notice.title" id="updatetitle"
+							placeholder="请输入公告标题"> <br>
+						<br>
+						<div class="box box-info">
+							<div class="box-header">
+								<br>
+								<!-- tools box -->
+								<div class="pull-right box-tools">
+									<button type="button" class="btn btn-info btn-sm"
+										data-widget="collapse" data-toggle="tooltip" title="Collapse">
+										<i class="fa fa-minus"></i>
+									</button>
+									<button type="button" class="btn btn-info btn-sm"
+										data-widget="remove" data-toggle="tooltip" title="Remove">
+										<i class="fa fa-times"></i>
+									</button>
+								</div>
+							</div>
+							<div class="box-body pad">
+								<textarea  rows="10" cols="70" name="notice.content" id="updatecontent">
+                   						</textarea>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="confirmOkUpdate">确定修改</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- /.content-wrapper -->
+#{set 'moreScripts'}
+<script type="text/javascript">
+	$(function() {
+
+		// 给id为xx的元素更改class
+		$("#treeview_30").addClass('active');
+		$("#menu_30").addClass('menu-open');
+		$("#menu_30").attr("style", "display: block;");
+		$("#listNotify").addClass('active');
+
+		//1.初始化Table
+		var oTable = new TableInit();
+		oTable.Init();
+
+		//2.初始化Button的点击事件
+		var oButtonInit = new ButtonInit();
+		oButtonInit.Init();
+
+	});
+
+	var TableInit = function() {
+		var oTableInit = new Object();
+		//初始化Table
+		oTableInit.Init = function() {
+			$('#t_table')
+					.bootstrapTable(
+							{
+								url : '/b/notifyMgr/listNotifyData', //请求后台的URL（*）
+								method : 'post', //请求方式（*）
+								toolbar : '#toolbar', //工具按钮用哪个容器
+								striped : true, //是否显示行间隔色
+								cache : false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+								pagination : true, //是否显示分页（*）
+								sortable : false, //是否启用排序
+								sortOrder : "asc", //排序方式
+								queryParams : oTableInit.queryParams,//传递参数（*）
+								sidePagination : "server", //分页方式：client客户端分页，server服务端分页（*）
+								pageNumber : 1, //初始化加载第一页，默认第一页
+								pageSize : 10, //每页的记录行数（*）
+								pageList : [ 10, 20, 30, 50 ], //可供选择的每页的行数（*）
+								search : false, //是否显示表格搜索,只是客户端搜索
+								strictSearch : true,
+								showColumns : true, //是否显示所有的列
+								showRefresh : true, //是否显示刷新按钮
+								minimumCountColumns : 1, //最少允许的列数
+								clickToSelect : true, //是否启用点击选中行
+								//height : 600, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+								uniqueId : "ID", //每一行的唯一标识，一般为主键列
+								showToggle : true, //是否显示详细视图和列表视图的切换按钮
+								cardView : false, //是否显示详细视图
+								detailView : false, //是否显示父子表
+								columns : [
+										{
+											field : 'id',
+											align : 'center',
+											title : 'ID'
+										},
+										{
+											field : 'title',
+											align : 'center',
+											title : '公告标题'
+										},
+										{
+											field : 'content',
+											align : 'center',
+											title : '公告内容'
+										},
+										{
+											field : 'add_time',
+											align : 'center',
+											title : '添加时间',
+											formatter : function(value, row,
+													index) {
+												if (value != null) {
+													console.log(value);
+													return value
+															.replace(
+																	/^(\d{4})(\d{2})(\d{2})$/,
+																	"$1-$2-$3");
+												} else {
+													return '-';
+												}
+											}
+										},
+										{
+											align : 'center',
+											title : '操作',
+											formatter : function(value, row,
+													index) {
+												return '<a href="javascript:void(0);" onclick="updateNotifyById(\''
+														+ row.id
+														+ '\',\''
+														+ index
+														+ '\')">修改</a>  | <a href="javascript:void(0);" onclick="confirm(\'是否确定此操作?\',\'/b/notifyMgr/delNotify?notice.id='
+														+ row.id
+														+ '\')">删除</a>';
+											}
+										} ]
+							});
+		};
+
+		//得到查询的参数
+		oTableInit.queryParams = function(params) {
+			var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+				limit : params.limit, //页面大小
+				offset : params.offset,
+				text_search : $("#text_search").val(),
+			//页码
+			};
+			return temp;
+		};
+		return oTableInit;
+	};
+
+	var ButtonInit = function() {
+		var oInit = new Object();
+		var postdata = {};
+
+		oInit.Init = function() {
+			//初始化页面上面的按钮事件
+			$("#btn_query").click(function() {
+				$('#t_table').bootstrapTable(('refresh')); // 很重要的一步，刷新url！
+			});
+		};
+
+		return oInit;
+	};
+
+	// 时间控件
+	$('.txt_search_starttime').datetimepicker({
+		language : 'zh',
+		format : 'yyyy-mm-dd',
+		autoclose : true, //当选择一个日期之后是否立即关闭此日期时间选择器。
+		todayHighlight : true,// 高亮当前日期
+		todayBtn : "linked",//如果是true的话，"Today" 按钮仅仅将视图转到当天的日期，如果是"linked"，当天日期将会被选中 
+		minView : "month" //  日期时间选择器所能够提供的最精确的时间选择视图
+	});
+
+	// 点击增加按钮
+	$("#confirmOkAdd").on("click", function() {
+		$("#addModal").modal("hide");
+		// 用户点击确定
+		$("#form-id").submit();
+	});
+
+	// 修改
+	function updateNotifyById(id, index) {
+		index = parseInt(index);
+		index += 1;
+		//获取表格中的一行数据  
+		var content = document.getElementById("t_table").rows[index].cells[2].innerText;
+		var title = document.getElementById("t_table").rows[index].cells[1].innerText;
+		var id = document.getElementById("t_table").rows[index].cells[0].innerText;
+		//向模态框中传值  
+		$('#updatetitle').val(title);
+		$('#updatecontent').val(content);
+		$('#updateid').val(id);
+		// 显示模态框
+		$("#updateModal").modal();
+	}
+
+	// 点击修改按钮
+	$("#confirmOkUpdate").on("click", function() {
+		$("#updateModal").modal("hide");
+		// 用户点击确定
+		$("#form-id-update").submit();
+	});
+</script>
+#{/set}

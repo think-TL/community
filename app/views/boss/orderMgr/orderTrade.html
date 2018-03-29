@@ -1,0 +1,620 @@
+#{extends 'main.html' /}
+<!-- 菜单点击状态设置 -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>交易管理</h1>
+		<ol class="breadcrumb">
+			<li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+			<li class="active">交易管理</li>
+		</ol>
+	</section>
+
+	<!-- Main content -->
+	<div class="panel-body" style="padding-bottom: 0px;">
+		<div class="panel panel-default">
+			<div class="panel-heading">查询条件</div>
+			<div class="panel-body">
+				<form id="formSearch" class="form-horizontal">
+					<div class="form-group" style="margin-top: 15px">
+					
+						<label class="control-label col-sm-1" for="txt_search_name">下单用户</label>
+						<div class="col-sm-3">
+							<input type="text" class="form-control" id="txt_search_name">
+						</div>
+					</div>
+					<div class="form-group" style="margin-top: 15px">
+					
+						<label class="control-label col-sm-1" for="txt_search_name">资源用户</label>
+						<div class="col-sm-3">
+							<input type="text" class="form-control" id="txt_search_re_name">
+						</div>
+					</div>
+					<div class="form-group" style="margin-top: 15px">
+						
+						<label class="control-label col-sm-1" for="txt_search_starttime">开始时间</label>
+						<div class="col-sm-2">
+							<input type="text"  id="txt_search_starttime" class="txt_search_starttime">
+						</div>
+						
+						<label class="control-label col-sm-2" for="txt_search_starttime">结束时间</label>
+						<div class="col-sm-2">
+							<input type="text"  id="txt_search_endtime" class="txt_search_starttime">
+						</div>
+						
+						<div class="col-sm-2" style="text-align: left;">
+							<button type="button" style="margin-left: 50px" id="btn_query"
+								class="btn btn-primary">查询</button>
+						</div> 
+					</div>
+				</form>
+			</div>
+		</div>
+		<table id="t_table" data-content-type="application/x-www-form-urlencoded"></table>
+	</div>
+</div>
+  <!-- 模态框（Modal） -->
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" style="width:1000px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" >
+            	<table id="userDetailData" data-content-type="application/x-www-form-urlencoded"></table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div> 
+ <!-- 模态框（Modal） -->
+ <div class="modal fade" id="myInteractionMsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" style="width:1000px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myInteractionMsgModalLabel"></h4>
+            </div>
+            <div class="modal-body" >
+            	<table id="userInteractionMsgData" data-content-type="application/x-www-form-urlencoded"></table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div> 
+<!-- 模态框（Modal） -->
+ <div class="modal fade" id="mySysMsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" style="width:1000px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="mySysMsgModalLabel"></h4>
+            </div>
+            <div class="modal-body" >
+            	<table id="userSysMsgData" data-content-type="application/x-www-form-urlencoded"></table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div> 
+<input type="hidden" id="user_id">
+	<!-- /.content-wrapper -->
+	#{set 'moreScripts'}
+	<script type="text/javascript">
+		$(function() {
+			
+			// 给id为xx的元素更改class
+			$("#treeview_6").addClass('active');
+			$("#menu_6").addClass('menu-open');
+			$("#menu_6").attr("style","display: block;");
+			$("#listRechargeMgr").addClass('active');
+
+			//1.初始化Table
+			var oTable = new TableInit();
+			oTable.Init();
+
+			//2.初始化Button的点击事件
+			var oButtonInit = new ButtonInit();
+			oButtonInit.Init();
+
+		});
+
+		var TableInit = function() {
+			var oTableInit = new Object();
+			//初始化Table
+			oTableInit.Init = function() {
+				$('#t_table').bootstrapTable({
+					url : '/b/orderMgr/oradeData', //请求后台的URL（*）
+					method : 'post', //请求方式（*）
+					toolbar : '#toolbar', //工具按钮用哪个容器
+					striped : true, //是否显示行间隔色
+					cache : false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+					pagination : true, //是否显示分页（*）
+					sortable : false, //是否启用排序
+					sortOrder : "asc", //排序方式
+					queryParams : oTableInit.queryParams,//传递参数（*）
+					sidePagination : "server", //分页方式：client客户端分页，server服务端分页（*）
+					pageNumber : 1, //初始化加载第一页，默认第一页
+					pageSize : 10, //每页的记录行数（*）
+					pageList : [ 10, 20, 30, 50 ], //可供选择的每页的行数（*）
+					search : false, //是否显示表格搜索,只是客户端搜索
+					strictSearch : true,
+					showColumns : true, //是否显示所有的列
+					showRefresh : true, //是否显示刷新按钮
+					minimumCountColumns : 1, //最少允许的列数
+					clickToSelect : true, //是否启用点击选中行
+					height : 600, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+					uniqueId : "ID", //每一行的唯一标识，一般为主键列
+					showToggle : true, //是否显示详细视图和列表视图的切换按钮
+					cardView : false, //是否显示详细视图
+					detailView : false, //是否显示父子表
+					columns : [{
+						field : 'id',
+						align: 'center',
+						title : '订单id'
+					},{
+						field : 'cmt',
+						align: 'center',
+						title : '资源所需信用值'
+					},{
+						field : 'name',
+						align: 'center',
+						title : '资源名称',
+					}, {
+						field : 're_name',
+						align: 'center',
+						title : '下单用户名',
+					},{
+						field : 'user_name',
+						align: 'center',
+						title : '资源用户',
+					}, {
+						field : 'price',
+						align: 'center',
+						title : '交易金额'
+					}, {
+						field : 'itime',
+						title : '下单时间',
+						align: 'center',
+						formatter: function (value, row, index) {
+							if(value != null){
+			                    return value.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3");
+							}else{
+								return '-';
+							}
+		                }
+					}]
+				});
+			};
+
+			//得到查询的参数
+			oTableInit.queryParams = function(params) {
+				var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+					limit : params.limit, //页面大小
+					offset : params.offset, //页码
+					username : $("#txt_search_name").val(),
+					startTime : $("#txt_search_starttime").val(),
+					endTime : $("#txt_search_endtime").val(),
+					reusername : $("#txt_search_re_name").val()
+				};
+				return temp;
+			};
+			return oTableInit;
+		};
+
+		var ButtonInit = function() {
+			var oInit = new Object();
+			var postdata = {};
+
+			oInit.Init = function() {
+				//初始化页面上面的按钮事件
+				$("#btn_query").click(function() {
+					$('#t_table').bootstrapTable(('refresh')); // 很重要的一步，刷新url！
+				});
+			};
+
+			return oInit;
+		};
+		
+		
+		// 时间控件
+		$('.txt_search_starttime').datetimepicker({
+			language:  'zh', 
+		    format: 'yyyy-mm-dd',
+		    autoclose:true, //当选择一个日期之后是否立即关闭此日期时间选择器。
+		    todayHighlight:true,// 高亮当前日期
+		    todayBtn:"linked",//如果是true的话，"Today" 按钮仅仅将视图转到当天的日期，如果是"linked"，当天日期将会被选中 
+		    minView: "month" //  日期时间选择器所能够提供的最精确的时间选择视图
+		}); 
+		
+		
+		
+		////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////
+		
+			// 通过用户id查看系统消息明细
+		function listUserSysMsgByUserId(user_id,index){
+			index = parseInt(index);
+			index += 1;
+			//获取表格中的一行数据  
+			var uname = document.getElementById("t_table").rows[index].cells[2].innerText;  
+			//向模态框中传值  
+			$('#mySysMsgModalLabel').text("用户 "+uname+" 的系统消息明细");  
+			$("#mySysMsgModal").modal();
+			
+			$("#user_id").val(user_id);
+			
+			$('#userSysMsgData').bootstrapTable(('refresh')); 
+			var oTable = new UserSysMsgDataTableInit();
+			oTable.Init(); 
+			
+		}
+		
+		var UserSysMsgDataTableInit = function() {
+			var oUserTableInit = new Object();
+			//初始化Table
+			oUserTableInit.Init = function() {
+				$('#userSysMsgData').bootstrapTable({
+					url : '/b/userMgr/listUserSysMsgByUserId', //请求后台的URL（*）
+					method : 'post', //请求方式（*）
+					toolbar : '#toolbar', //工具按钮用哪个容器
+					striped : true, //是否显示行间隔色
+					cache : false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+					pagination : true, //是否显示分页（*）
+					sortable : false, //是否启用排序
+					sortOrder : "asc", //排序方式
+					queryParams : oUserTableInit.queryParams,//传递参数（*）
+					sidePagination : "server", //分页方式：client客户端分页，server服务端分页（*）
+					pageNumber : 1, //初始化加载第一页，默认第一页
+					pageSize : 10, //每页的记录行数（*）
+					pageList : [ 10, 20, 30, 50 ], //可供选择的每页的行数（*）
+					search : false, //是否显示表格搜索,只是客户端搜索
+					strictSearch : true,
+					showColumns : true, //是否显示所有的列
+					showRefresh : true, //是否显示刷新按钮
+					minimumCountColumns : 1, //最少允许的列数
+					clickToSelect : true, //是否启用点击选中行
+					height : 600, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+					uniqueId : "ID", //每一行的唯一标识，一般为主键列
+					showToggle : true, //是否显示详细视图和列表视图的切换按钮
+					cardView : false, //是否显示详细视图
+					detailView : false, //是否显示父子表
+					columns : [{
+						field : 'user_nickname',
+						align: 'center',
+						title : '用户名',
+						formatter: function (value, row, index) {
+			                    return value;
+		                }
+					},{
+						field : 'money',
+						align: 'center',
+						title : '金币数',
+						formatter: function (value, row, index) {
+							var s = "";
+							if(row.status == "1"){
+			                    s =  '+';
+							}else{
+			                    s = '-';
+							}
+							
+							if(value != null){
+			                    return s +value;
+							}else{
+								return '-';
+							}
+		                }
+					},{
+						field : 'type',
+						align: 'center',
+						title : '来源',
+						formatter: function (value, row, index) {
+							 if(value == "0"){
+			                    return row.message;
+							}else if(value == "1"){
+			                    return '充值';
+							}else if(value == "2"){
+								if(row.operationstatus == "1"){
+									return '<span style="color:red">提现(未审核)</span>';
+								}else if(row.operationstatus == "2"){
+									return '<span style="color:orange">提现(审核通过未打款)</span>';
+								}else if(row.operationstatus == "3"){
+									return '<span style="color:green">提现(已打款)</span>';
+								}else if(row.operationstatus == "4"){
+									return '<span style="color:blue">提现(审核未通过)</span>';
+								}else if(row.operationstatus == "5"){
+									return '<span style="color:#A020F0">提现(打款失败)</span>';
+								}else if(row.operationstatus == "6"){
+									return '<span style="color:#A020F0">打款正在处理中</span>';
+								}
+							}else if(value == "3"){
+			                    return '其他用户绑定冲会员返钱';
+							}else if(value == "4"){
+			                    return '其他用户查看女神相册返钱';
+							}else if(value == "5"){
+			                    return '充值查看女神相册';
+							}else if(value == "6"){
+			                    return '充值会员';
+							}else if(value == "7"){
+			                    return '提现被拒绝，增加钱';
+							}else if(value == "8"){
+			                    return '提现失败，增加钱';
+							}
+		                }
+					},{
+						field : 'vipuseridnum',
+						align: 'center',
+						title : '对方ID'
+					},{
+						field : 'status',
+						align: 'center',
+						title : '类型',
+						formatter: function (value, row, index) {
+							if(value == "1"){
+			                    return '<span style="color:green">+</span>';
+							}else{
+			                    return '<span style="color:red">-</span>';
+							}
+		                }
+					},{
+						field : 'itime',
+						align: 'center',
+						title : '时间',
+						formatter: function (value, row, index) {
+							if(value != null){
+				                    return value.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/, "$1-$2-$3 $4:$5:$6");
+							}else{
+								return '-';
+							}
+		                }
+					},{
+						field : 'balance',
+						align: 'center',
+						title : '金币余额',
+						formatter : function(value, row, index) {
+							if(value != null){
+								return '<span style="color:red">'+value+'</span>';
+							}else{
+								return '-';
+							}
+						}
+					}]
+				});
+			};
+
+			oUserTableInit.queryParams = function(params) {
+				var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+					limit : params.limit, //页面大小
+					offset : params.offset, //页码
+					userid : $("#user_id").val()
+				};
+				return temp;
+			};
+			return oUserTableInit;
+		};
+		
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// 通过用户id查看互动消息明细
+		function listUserInteractionMsgByUserId(user_id,index){
+			index = parseInt(index);
+			index += 1;
+			//获取表格中的一行数据  
+			var uname = document.getElementById("t_table").rows[index].cells[2].innerText;  
+			//向模态框中传值  
+			$('#myInteractionMsgModalLabel').text("用户 "+uname+" 的互动消息明细 ");  
+			$("#myInteractionMsgModal").modal();
+			
+			$("#user_id").val(user_id);
+			
+			$('#userInteractionMsgData').bootstrapTable(('refresh')); 
+			var oTable2 = new UserInteractionTableInit2();
+			oTable2.Init(); 
+			
+		}
+		
+		var UserInteractionTableInit2 = function() {
+			var oUserTableInit2 = new Object();
+			//初始化Table
+			oUserTableInit2.Init = function() {
+				$('#userInteractionMsgData').bootstrapTable({
+					url : '/b/userMgr/listUserInteractionMsgByUserId', //请求后台的URL（*）
+					method : 'post', //请求方式（*）
+					toolbar : '#toolbar', //工具按钮用哪个容器
+					striped : true, //是否显示行间隔色
+					cache : false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+					pagination : true, //是否显示分页（*）
+					sortable : false, //是否启用排序
+					sortOrder : "asc", //排序方式
+					queryParams : oUserTableInit2.queryParams,//传递参数（*）
+					sidePagination : "server", //分页方式：client客户端分页，server服务端分页（*）
+					pageNumber : 1, //初始化加载第一页，默认第一页
+					pageSize : 10, //每页的记录行数（*）
+					pageList : [ 10, 20, 30, 50 ], //可供选择的每页的行数（*）
+					search : false, //是否显示表格搜索,只是客户端搜索
+					strictSearch : true,
+					showColumns : true, //是否显示所有的列
+					showRefresh : true, //是否显示刷新按钮
+					minimumCountColumns : 1, //最少允许的列数
+					clickToSelect : true, //是否启用点击选中行
+					height : 600, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+					uniqueId : "ID", //每一行的唯一标识，一般为主键列
+					showToggle : true, //是否显示详细视图和列表视图的切换按钮
+					cardView : false, //是否显示详细视图
+					detailView : false, //是否显示父子表
+					columns : [{
+						field : 'user_nickname',
+						align: 'center',
+						title : '用户名',
+						formatter: function (value, row, index) {
+		                    return value;
+		                }
+					},{
+						field : 'money',
+						align: 'center',
+						title : '金币数',
+						formatter: function (value, row, index) {
+							var s = "";
+							if(row.status == "1"){
+			                    s =  '+';
+							}else{
+			                    s = '-';
+							}
+							
+							if(value != null){
+			                    return s +value;
+							}else{
+								return '-';
+							}
+		                }
+					},{
+						field : 'type',
+						align: 'center',
+						title : '来源',
+						formatter: function (value, row, index) {
+							if(value == "1"){
+			                    return '送礼';
+							}else if(value == "2"){
+								return '接礼物';
+							}else if(value == "3"){
+			                    return '打电话门槛金币';
+							}else if(value == "4"){
+			                    return '主动戳一戳';
+							}else if(value == "5"){
+			                    return '拨打电话';
+							}else if(value == "6"){
+			                    return '被动戳一戳';
+							}else if(value == "7"){
+								if(row.connectflag == "0"){
+				                    return '挂断电话';
+								}else{
+				                    return '接听电话';
+								}
+							}else if(value == "8"){
+			                    return '其他人关注此人';
+							}else if(value == "10"){
+			                    return '男性下级充值';
+							}else if(value == "11"){
+			                    return '女性下级接电话';
+							}else if(value == "12"){
+			                    return '未接来电';
+							}else if(value == "13"){
+			                    return '通话奖励';
+							}else if(value == "14"){
+			                    return '新手奖励';
+							}else if(value == "15"){
+			                    return '一级用户注册';
+							}else if(value == "16"){
+			                    return '二级用户注册';
+							}else if(value == "17"){
+			                    return '注册赠送金币';
+							}
+		                }
+					},{
+						field : 'contact_user_idnum',
+						align: 'center',
+						title : '对方ID'
+					},{
+						field : 'contact_user_nickname',
+						align: 'center',
+						title : '对方昵称'
+					},{
+						field : 'calltimetotle',
+						align: 'center',
+						title : '通话时长(秒)',
+						formatter: function (value, row, index) {
+							if(value > 0){
+								var theTime = parseInt(value);// 秒 
+								var theTime1 = 0;// 分 
+								var theTime2 = 0;// 小时 
+								// alert(theTime); 
+								if(theTime > 60) { 
+									theTime1 = parseInt(theTime/60); 
+									theTime = parseInt(theTime%60); 
+									// alert(theTime1+"-"+theTime); 
+									if(theTime1 > 60) { 
+										theTime2 = parseInt(theTime1/60); 
+										theTime1 = parseInt(theTime1%60); 
+									} 
+								} 
+								var result = ""+parseInt(theTime)+"秒"; 
+								if(theTime1 > 0) { 
+								result = ""+parseInt(theTime1)+"分"+result; 
+								} 
+								if(theTime2 > 0) { 
+								result = ""+parseInt(theTime2)+"小时"+result; 
+								} 
+								return result; 
+							}else{
+			                    return '-';
+							}
+		                }
+					},{
+						field : 'gift_name',
+						align: 'center',
+						title : '礼物名称'
+					},{
+						field : 'giftnum',
+						align: 'center',
+						title : '礼物数量'
+					},{
+						field : 'status',
+						align: 'center',
+						title : '类型',
+						formatter: function (value, row, index) {
+							if(value == "1"){
+			                    return '<span style="color:green">+</span>';
+							}else{
+			                    return '<span style="color:red">-</span>';
+							}
+		                }
+					},{
+						field : 'itime',
+						align: 'center',
+						title : '时间',
+						formatter: function (value, row, index) {
+							if(value != null){
+			                    return value.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/, "$1-$2-$3 $4:$5:$6");
+							}else{
+								return '-';
+							}
+		                }
+					},{
+						field : 'balance',
+						align: 'center',
+						title : '金币余额',
+						formatter : function(value, row, index) {
+							if(value != null){
+								return '<span style="color:red">'+value+'</span>';
+							}else{
+								return '-';
+							}
+						}
+					}]
+				});
+			};
+
+			oUserTableInit2.queryParams = function(params) {
+				var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+					limit : params.limit, //页面大小
+					offset : params.offset, //页码
+					userid : $("#user_id").val()
+				};
+				return temp;
+			};
+			return oUserTableInit2;
+		};
+	</script>
+	#{/set}

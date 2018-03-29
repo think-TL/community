@@ -1,0 +1,246 @@
+#{extends 'main.html' /}
+<!-- 菜单点击状态设置 -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>评论管理</h1>
+		<ol class="breadcrumb">
+			<li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+			<li class="active">评论管理</li>
+		</ol>
+	</section>
+
+	<!-- Main content -->
+	<div class="panel-body" style="padding-bottom: 0px;">
+		<div class="panel panel-default">
+			<div class="panel-heading">查询条件</div>
+			<div class="panel-body">
+				<form id="formSearch" class="form-horizontal">
+					<div class="form-group" style="margin-top: 15px">
+					
+						<label class="control-label col-sm-1" for="txt_search_status">类别选择</label>
+						<div class="col-sm-3">
+							<select class="form-control" id="txt_search_status"> 
+								<option value="-1">全部</option> 
+								<option value="1">未阅</option> 
+								<option value="0">已阅</option> 
+							</select> 
+						</div>
+						
+					</div>
+					<div class="form-group" style="margin-top: 15px">
+						
+						<label class="control-label col-sm-1" for="txt_search_starttime">开始时间</label>
+						<div class="col-sm-2">
+							<input type="text"  id="txt_search_starttime" class="txt_search_starttime">
+						</div>
+						
+						<label class="control-label col-sm-2" for="txt_search_starttime">结束时间</label>
+						<div class="col-sm-2">
+							<input type="text"  id="txt_search_endtime" class="txt_search_starttime">
+						</div>
+						
+						<div class="col-sm-2" style="text-align: left;">
+							<button type="button" style="margin-left: 50px" id="btn_query"
+								class="btn btn-primary">查询</button>
+						</div> 
+					</div>
+				</form>
+			</div>
+		</div>
+		<table id="t_table" data-content-type="application/x-www-form-urlencoded"></table>
+	</div>
+</div>
+ <!-- 推送的模态框（Modal） -->
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">查阅</h4>
+            </div>
+            <div class="modal-body" >
+            	<form action="/b/OpinionMgr/updateStatusById"  id="form-id" method="post">
+            	#{authenticityToken /}
+            	<input type="hidden" id="message_id" name="messageBoard.id" >
+		            <div class="form-group">
+				        <label  for="name">评论内容</label>
+				        <div class="box-body pad">
+								<textarea id="content" rows="10" cols="70" disabled>
+                   				</textarea>
+						</div>
+		            </div>
+		        </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="confirmOkAdd">已阅</button>
+            </div>
+        </div>
+    </div>
+</div> 
+	<!-- /.content-wrapper -->
+	#{set 'moreScripts'}
+	<script type="text/javascript">
+		$(function() {
+			
+			// 给id为xx的元素更改class
+			$("#treeview_13").addClass('active');
+			$("#menu_13").addClass('menu-open');
+			$("#menu_13").attr("style","display: block;");
+			$("#listOpinion").addClass('active');
+
+			//1.初始化Table
+			var oTable = new TableInit();
+			oTable.Init();
+
+			//2.初始化Button的点击事件
+			var oButtonInit = new ButtonInit();
+			oButtonInit.Init();
+
+		});
+
+		var TableInit = function() {
+			var oTableInit = new Object();
+			//初始化Table
+			oTableInit.Init = function() {
+				$('#t_table').bootstrapTable({
+					url : '/b/OpinionMgr/listOpinionData', //请求后台的URL（*）
+					method : 'post', //请求方式（*）
+					toolbar : '#toolbar', //工具按钮用哪个容器
+					striped : true, //是否显示行间隔色
+					cache : false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+					pagination : true, //是否显示分页（*）
+					sortable : false, //是否启用排序
+					sortOrder : "asc", //排序方式
+					queryParams : oTableInit.queryParams,//传递参数（*）
+					sidePagination : "server", //分页方式：client客户端分页，server服务端分页（*）
+					pageNumber : 1, //初始化加载第一页，默认第一页
+					pageSize : 10, //每页的记录行数（*）
+					pageList : [ 10, 20, 30, 50 ], //可供选择的每页的行数（*）
+					search : false, //是否显示表格搜索,只是客户端搜索
+					strictSearch : true,
+					showColumns : true, //是否显示所有的列
+					showRefresh : true, //是否显示刷新按钮
+					minimumCountColumns : 1, //最少允许的列数
+					clickToSelect : true, //是否启用点击选中行
+					height : 600, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+					uniqueId : "ID", //每一行的唯一标识，一般为主键列
+					showToggle : true, //是否显示详细视图和列表视图的切换按钮
+					cardView : false, //是否显示详细视图
+					detailView : false, //是否显示父子表
+					columns : [ {
+						field : 'id',
+						title : 'ID',
+						align: 'center'
+					},{
+						field : 'user_name',
+						title : '用户名',
+						align: 'center'
+					},{
+						field : 'content',
+						title : '评论内容',
+						align: 'center'
+					}, {
+						field : 'sex',
+						align: 'center',
+						title : '用户性别',
+						formatter : function(value, row, index) {
+							if (value == '0') {
+								return '女';
+							} else {
+								return '男';
+							}
+						}
+					} , {
+						field : 'add_time',
+						align: 'center',
+						title : '评论时间',
+						formatter: function (value, row, index) {
+							if(value != null){
+			                    return value.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3");
+							}else{
+								return '-';
+							}
+		                }
+						
+					}, {
+						field : 'title',
+						align: 'center',
+						title : '评论文章标题'
+					}, {
+						field : 'status',
+						title : '操作',
+						align: 'center',
+						formatter: function (value, row, index) {
+							if(value == "0"){
+			                    return "已阅";
+							}else{
+								return '<a href="javascript:void(0);" onclick="pushMsg(\''+row.id+'\',\''+index+'\')">未阅</a>';
+							}
+		                }
+					}]
+				});
+			};
+
+			//得到查询的参数
+			oTableInit.queryParams = function(params) {
+				var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+					limit : params.limit, //页面大小
+					offset : params.offset, //页码
+					status : $("#txt_search_status").val(),
+					startTime : $("#txt_search_starttime").val(),
+					endTime : $("#txt_search_endtime").val()
+				};
+				return temp;
+			};
+			return oTableInit;
+		};
+
+		var ButtonInit = function() {
+			var oInit = new Object();
+			var postdata = {};
+
+			oInit.Init = function() {
+				//初始化页面上面的按钮事件
+				$("#btn_query").click(function() {
+					$('#t_table').bootstrapTable(('refresh')); // 很重要的一步，刷新url！
+				});
+			};
+
+			return oInit;
+		};
+		
+		// 单个编辑推送
+		function pushMsg(id,index){
+			index = parseInt(index);
+			index += 1;
+			var id = document.getElementById("t_table").rows[index].cells[0].innerText;
+			var content = document.getElementById("t_table").rows[index].cells[2].innerText;
+			$('#message_id').val(id);  
+			$('#content').val(content);  
+			// 显示模态框
+			$("#myModal").modal();
+		}
+		
+		
+		// 点击推送按钮
+		$("#confirmOkAdd").on("click", function() {
+			$("#myModal").modal("hide");
+			// 用户点击确定
+			$("#form-id").submit();
+	    });
+		
+		
+		// 时间控件
+		$('.txt_search_starttime').datetimepicker({
+			language:  'zh', 
+		    format: 'yyyy-mm-dd',
+		    autoclose:true, //当选择一个日期之后是否立即关闭此日期时间选择器。
+		    todayHighlight:true,// 高亮当前日期
+		    todayBtn:"linked",//如果是true的话，"Today" 按钮仅仅将视图转到当天的日期，如果是"linked"，当天日期将会被选中 
+		    minView: "month" //  日期时间选择器所能够提供的最精确的时间选择视图
+		}); 
+	</script>
+	#{/set}

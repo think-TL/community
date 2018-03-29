@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="keywords"   content="春聊" />
+    <meta name="keywords"   content="春聊app" />
+    <meta name="keywords"   content="春聊下载" />
+    <meta name="keywords"   content="春聊官方" />
+    <meta name="keywords"   content="附近" />
+    <meta name="keywords"   content="约爱" />
+    <meta name="keywords"   content="视频" />
+    <meta name="keywords"   content="语音" />
+    <meta name="keywords"   content="同城" />
+    <meta name="keywords"   content="交友" />
+    <meta name="keywords"   content="附近约爱" />
+    <meta name="keywords"   content="视频约爱" />
+    <meta name="keywords"   content="同城约爱" />
+    <meta name="keywords"   content="附近交友" />
+    <meta name="keywords"   content="视频交友" />
+    <meta name="keywords"   content="同城交友" />
+    <meta name="keywords"   content="语音交友" />
+    <meta name="keywords"   content="约会" />
+    <meta name="keywords"   content="附近约会" />
+    <meta name="keywords"   content="同城约会" />
+    <meta name="keywords"   content="约会神器" />
+    <meta name="keywords"   content="约爱神器" />
+    <meta name="keywords"   content="交友神器" />
+    <meta name="keywords"   content="陌陌" />
+    <meta name="keywords"   content="点聊" />
+    <meta name="keywords"   content="爽聊" />
+    <meta name="keywords"   content="富聊" />
+    <meta name="keywords"   content="快手" />
+    <meta name="keywords"   content="抖音" />
+    <meta name="keywords"   content="最右" />
+    <meta name="description"   content="春聊官方网站，一对一私密视频聊天。100%真实认证美女，随时与高颜值美女畅谈人生，畅谈理想，聊你所聊，爱你所爱。" />
+		<title>春聊|一对一视频交友</title>
+		<style type="text/css">
+			* {
+				    margin: 0;
+				    padding: 0;
+				}
+		</style>
+		<script type="text/javascript">
+				//平台、设备和操作系统
+				var system ={
+				win : false,
+				mac : false,
+				xll : false
+				};
+				//检测平台
+				var p = navigator.platform;
+				system.win = p.indexOf("Win") == 0;
+				system.mac = p.indexOf("Mac") == 0;
+				system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+				//跳转语句
+				if(system.win||system.mac||system.xll){
+					location.href = "http://www.33se.cn/index";
+				}else{
+					//location.href = "http://www.lianmaiba.com";
+				}
+		</script>
+		<script src="http://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+		<link rel="shortcut icon" type="image/png"
+	href="../../../../public/images/favicon.png">
+	</head>
+
+	<body  id="bodyId" style="background-image: url(http://cdn.lianmaiba.com/mobileFolder/mobile_background.png);background-attachment: fixed;background-repeat: no-repeat;background-size: cover;">
+		
+		<div style="width: 100%;margin-top: 1%;" align="center">
+			<img src="http://cdn.lianmaiba.com/mobileFolder/mobile_logo.png" style="width:20%" />
+		</div>
+		<!-- 播放视频   -->
+		<video id="video"  poster="http://cdn.lianmaiba.com/mobileFolder/mobile_surface.png"  playsinline  width="66%" controls loop  style="clear:both;display:block;margin:3% auto 0px auto;height:85.7vw">
+		  <source src="http://cdn.lianmaiba.com/mobileFolder/video.mp4" type="video/mp4">
+		</video>
+		<div style="width: 80%;margin:5% auto 0px auto;" align="center">
+			<img src="http://cdn.lianmaiba.com/mobileFolder/mobile_slogan.png" style="width:100%" />
+		</div>
+		<div style="width: 100%;margin:4% auto 0px auto;" >
+			<a href="javascript:void(0)" onclick="androidDown()">
+				<img src="http://cdn.lianmaiba.com/mobileFolder/mobile_android.png" style="margin: 0px 2% 4% 10%;float: left;" width="38%" />
+			</a>
+			<a href="javascript:void(0)" onclick="iosDown()">
+				<img src="http://cdn.lianmaiba.com/mobileFolder/mobile_ios.png" style="margin: 0px 10% 0px 2%;float: left;" width="38%"/>
+			</a>
+			<div style="width: 100%;margin:1% auto 0px auto;float: left;color: white;text-align: center;" >
+					<!-- 苹果安装后，请在设置->通用->设备管理中信任 -->
+			</div>
+		</div>
+		<script>
+			
+			
+			var b = true;
+			function androidDown(){
+				var ua = window.navigator.userAgent.toLowerCase(); 
+				if(ua.match(/MicroMessenger/i) == 'micromessenger'){ 
+					if(b){
+						$("#bodyId").prepend('<img src="http://cdn.lianmaiba.com/mobileFolder/mobile_tip.png" width="100%"/>');
+						b = false;
+					}
+				}else{ 
+					window.location.href = "http://cdn.lianmaiba.com/chunliao.apk";
+				} 
+			}
+			function iosDown(){
+				var ua = window.navigator.userAgent.toLowerCase(); 
+				if(ua.match(/MicroMessenger/i) == 'micromessenger'){ 
+					if(b){
+						$("#bodyId").prepend('<img src="http://cdn.lianmaiba.com/mobileFolder/mobile_tip.png" width="100%"/>');
+						b = false;
+					}
+				}else{ 
+					window.location.href = "https://itunes.apple.com/cn/app/%E6%98%A5%E8%81%8A/id1286281953?mt=8";
+/* 					window.location.href = "itms-services:///?action=download-manifest&url=https://oss-makefriend.oss-cn-shenzhen.aliyuncs.com/mobileFolder/chunliao.plist"; */
+				} 
+			}
+			
+		</script>
+		<script>
+			var _mtac = {};
+			(function() {
+			    var mta = document.createElement("script");
+			    mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.2";
+			    mta.setAttribute("name", "MTAH5");
+			    mta.setAttribute("sid", "500545113");
+			    var s = document.getElementsByTagName("script")[0];
+			    s.parentNode.insertBefore(mta, s);
+			})();
+		</script>
+	</body>
+</html>

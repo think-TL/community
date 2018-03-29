@@ -1,0 +1,20 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                                       site.MobileWebMgr.mobileIndex
+GET     /login                                  boss.loginmgr.login
+
+
+
+# Ignore favicon requests
+GET     /favicon.ico                            404
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/                                staticDir:public
+
+# Catch all
+*       /m/{controller}/{action}                  api.{controller}.{action}
+*       /w/{controller}/{action}                  site.{controller}.{action}
+*          /b/{controller}/{action}                  boss.{controller}.{action}
