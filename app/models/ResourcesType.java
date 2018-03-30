@@ -11,7 +11,7 @@ import play.db.jpa.GenericModel;
 
 @Entity
 @Table(name = "t_resources_type")
-public class Resources_type extends GenericModel{
+public class ResourcesType extends GenericModel{
 	@Id
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
