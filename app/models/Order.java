@@ -1,8 +1,11 @@
 package models;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import play.db.jpa.GenericModel;
 
@@ -16,6 +19,8 @@ import play.db.jpa.GenericModel;
 @Table(name = "t_order")
 public class Order extends GenericModel{
 	@Id
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	public String id;
 	// 下单用户id
 	public String user_id;

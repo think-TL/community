@@ -1,8 +1,11 @@
 package models;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import play.db.jpa.GenericModel;
 
@@ -10,6 +13,8 @@ import play.db.jpa.GenericModel;
 @Table(name = "t_resources")
 public class Resources  extends GenericModel{
 	@Id
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	// 主键
 	public String id;
 	// 资源名称

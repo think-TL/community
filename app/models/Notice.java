@@ -12,9 +12,9 @@ import play.db.jpa.GenericModel;
 @Entity
 @Table(name = "t_notice")
 public class Notice extends GenericModel{
+	@Id
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	@Id
 	// 主键
 	public String id;
 	// 标题
