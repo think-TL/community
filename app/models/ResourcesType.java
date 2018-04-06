@@ -9,9 +9,15 @@ import org.hibernate.annotations.GenericGenerator;
 
 import play.db.jpa.GenericModel;
 
+/**
+ * 资源类型表
+ * 
+ * @author tl
+ *
+ */
 @Entity
 @Table(name = "t_resources_type")
-public class Resources_type extends GenericModel{
+public class ResourcesType extends GenericModel{
 	@Id
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")

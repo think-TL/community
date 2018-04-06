@@ -21,7 +21,7 @@ import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 
 import controllers.util.RedisUtil;
 import controllers.util.Utils;
-import models.Resources_type;
+import models.ResourcesType;
 import play.Logger;
 import play.Play;
 import play.data.validation.Valid;
@@ -89,7 +89,7 @@ public class LabelMgr extends Controller {
 	/**
 	 *  增加标签
 	 */
-	public static void addLabel(Resources_type label) {
+	public static void addLabel(ResourcesType label) {
 		System.out.println(label.name);
 		// 获取jedis
 		Jedis jedis = RedisUtil.getJedis();
@@ -117,11 +117,11 @@ public class LabelMgr extends Controller {
 	/**
 	 * 修改标签
 	 */
-	public static void updateLabel(Resources_type label) {
+	public static void updateLabel(ResourcesType label) {
 		// 获取jedis
 		Jedis jedis = RedisUtil.getJedis();
 		try {
-			Resources_type oldLabel = Resources_type.find("id=? and deleteflag = 1", label.id).first();
+			ResourcesType oldLabel = ResourcesType.find("id=? and deleteflag = 1", label.id).first();
 			oldLabel.bizuser_id = jedis.hmget(session.getId() + ":bizuser:info", "id").get(0);
 			oldLabel.upd_time = Utils.getCurrentTime();
 			oldLabel.name = label.name;
@@ -143,18 +143,18 @@ public class LabelMgr extends Controller {
 	/**
 	 * 删除标签
 	 */
-	public static void delLabel(Resources_type label) {
+	public static void delLabel(ResourcesType label) {
 		// 获取jedis
 		Jedis jedis = RedisUtil.getJedis();
 		try {
-			Resources_type oldLabel = Resources_type.find("id=? and deleteflag = 1", label.id).first();
+			ResourcesType oldLabel = ResourcesType.find("id=? and deleteflag = 1", label.id).first();
 			oldLabel.bizuser_id = jedis.hmget(session.getId() + ":bizuser:info", "id").get(0);
 			oldLabel.upd_time = Utils.getCurrentTime();
 			oldLabel.deleteflag = "0";
 			oldLabel = oldLabel.save();
 			
 			// 更新redis里的数据
-			List list = Resources_type.find("deleteflag = 1").fetch();
+			List list = ResourcesType.find("deleteflag = 1").fetch();
 			String resultStr = new Gson().toJsonTree(list).toString();
 
 			Map<String, String> info = Utils.beanToMap(oldLabel);
