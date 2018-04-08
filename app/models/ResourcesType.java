@@ -23,7 +23,7 @@ public class ResourcesType extends GenericModel{
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	// id
 	public String id;
-	// 资源名称
+	// 资源类型名称
 	public String name;
 	// 添加时间
 	public String add_time;

@@ -241,7 +241,7 @@ public class UserApi extends Controller {
 			
 			User oldUser = user.find("user_id = ? ", user.user_id).first();
 
-			if(user.user_name != null && !TextUtils.isEmpty(user.user_name)) {
+			if(user.user_name != null && !TextUtils.isEmpty(user.user_name.trim())) {
 				// 修改用户名前判断是否存在
 				oldUser.user_name = user.user_name.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "");
 				Map map = allRun.query("SELECT user_id FROM t_user WHERE user_name = ? AND user_id <> ? ", new MapHandler(), oldUser.user_name,oldUser.user_id);
@@ -255,15 +255,15 @@ public class UserApi extends Controller {
 				}
 			}
 			
-			if(user.head_img != null && !TextUtils.isEmpty(user.head_img)) {
+			if(user.head_img != null && !TextUtils.isEmpty(user.head_img.trim())) {
 				oldUser.head_img = user.head_img;
 			}
 			
-			if(user.birth != null && !TextUtils.isEmpty(user.birth)) {
+			if(user.birth != null && !TextUtils.isEmpty(user.birth.trim())) {
 				oldUser.birth = user.birth;
 			}
 			
-			if(user.emali != null && !TextUtils.isEmpty(user.emali)) {
+			if(user.emali != null && !TextUtils.isEmpty(user.emali.trim())) {
 				oldUser.emali = user.emali.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "");
 			}
 			
