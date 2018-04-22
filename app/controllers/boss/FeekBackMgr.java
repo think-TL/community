@@ -19,7 +19,7 @@ import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 
 import controllers.util.RedisUtil;
 import controllers.util.Utils;
-import models.MessageBoard;
+import models.Opinion;
 import play.Logger;
 import play.Play;
 import play.data.validation.Valid;
@@ -29,19 +29,17 @@ import play.mvc.With;
 import redis.clients.jedis.Jedis;
 
 /**
- *  评论管理
- * 
- * @author Au QQ:594919495
+ * 意见反馈
  *
  */
 @With(BossIntercepter.class)
-public class OpinionMgr extends Controller {
+public class FeekBackMgr extends Controller {
 	
 	private static DataSource ds = DB.getDataSource();
 	private static QueryRunner run = new QueryRunner(ds);
 	
 	/**
-	 *  评论管理管理
+	 * 意见反馈管理
 	 */
 	public static void listOpinion() {
 		// 获取jedis
@@ -59,13 +57,13 @@ public class OpinionMgr extends Controller {
 	}
 	
 	/**
-	 * 评论管理
+	 * 意见反馈管理
 	 */
 	public static void listOpinionData(int limit, int offset,String status,String startTime,String endTime) {
 		try {
 			JsonObject jsonObject = new JsonObject();
 			
-			StringBuffer sql = new StringBuffer("SELECT o.id,u.user_name,u.sex,o.status,o.content,o.add_time,t.title FROM t_message_board o INNER JOIN t_user u ON u.user_id = o.user_id JOIN t_notice t on t.id = o.notice_id  WHERE 1 = 1");
+			StringBuffer sql = new StringBuffer("SELECT u.idnum,u.getuicid,o.id,o.content,o.user_nickname,o.user_sex,o.user_id,o.status,o.itime FROM t_opinion o INNER JOIN t_user u ON u.id = o.user_id WHERE 1 = 1 ");
 			
 			StringBuffer wheres = new StringBuffer();
 			// 判断是否根据状态查找
@@ -75,25 +73,50 @@ public class OpinionMgr extends Controller {
 			
 			// 判断是否根据时间查询
 			if(startTime != null && !"".equals(startTime)){
-				wheres.append(" AND o.add_time > " + Utils.getSecurityParm(startTime.replaceAll("-", "")));
+				wheres.append(" AND o.itime > " + Utils.getSecurityParm(startTime.replaceAll("-", ""))+"000000");
 			}
 			
 			// 判断是否根据时间查询
 			if(endTime != null && !"".equals(endTime)){
-				wheres.append(" AND o.add_time < " + Utils.getSecurityParm(endTime.replaceAll("-", "")));
+				wheres.append(" AND o.itime < " + Utils.getSecurityParm(endTime.replaceAll("-", ""))+"000000");
 			}
+			
 			// 获得数据
-			List statisticsList = run.query(sql.toString() + wheres.toString() + " limit ?,?",new MapListHandler(),offset,limit);
+			List statisticsList = run.query(sql.toString() + wheres.toString() + " order by itime desc limit ?,?",new MapListHandler(),offset,limit);
 			// 获得总条数
-			List list = run.query("SELECT COUNT(o.id) as total FROM t_message_board o WHERE 1 = 1 " + wheres.toString(), new MapListHandler());
+			List list = run.query("SELECT COUNT(o.id) as total FROM t_opinion o WHERE 1 = 1 " + wheres.toString(), new MapListHandler());
 		
 			Map map = (Map) list.get(0);
 			jsonObject.addProperty("total", map.get("total").toString());
 			jsonObject.add("rows", new Gson().toJsonTree(statisticsList));
 			renderJSON(jsonObject);
 		} catch (Exception e) {
-			e.printStackTrace();
-			Logger.error("评论管理错误", e.getMessage());
+			Logger.error("获取意见反馈管理错误", e.getMessage());
 		}
 	}
+	
+	/**
+	 * 处理意见反馈
+	 */
+	public static void updateStatusById(String id) {
+		// 获取jedis
+		Jedis jedis = RedisUtil.getJedis();
+		try {
+			Opinion o = Opinion.find("id = ?", id).first();
+			o.status = "0";
+			o.utime = Utils.getCurrentTime();
+			o.bizuser_id = jedis.hmget(session.getId() + ":bizuser:info", "id").get(0);
+			o.save();
+			
+			// 关闭链接
+			RedisUtil.closeJedisPool(jedis);
+			listOpinion();
+		} catch (Exception e) {
+			// 关闭链接
+			RedisUtil.closeJedisPool(jedis);
+			Logger.error("处理意见反馈错误", e.getMessage());
+		}
+	}
+	
+	
 }

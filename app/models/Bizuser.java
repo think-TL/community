@@ -42,5 +42,7 @@ public class Bizuser extends GenericModel {
 	public String bizuser_id;
 	// 删除状态
 	public String deleteflag;
+	// 备注，管理员的名字
+	public String memo;
 	
 }

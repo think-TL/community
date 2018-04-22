@@ -57,7 +57,7 @@ import redis.clients.jedis.Jedis;
  *
  */
 @With(BossIntercepter.class)
-public class orderMgr extends Controller {
+public class OrderMgr extends Controller {
 
 	private static DataSource ds = DB.getDataSource();
 	private static QueryRunner run = new QueryRunner(ds);

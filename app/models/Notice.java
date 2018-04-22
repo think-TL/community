@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -35,4 +36,11 @@ public class Notice extends GenericModel{
 	public String bizuser_id;
 	// 公告删除状态(1：正常 0：删除)
 	public String deleteflag;
+	
+	//开始时间
+	@Transient
+	public String startTime;
+	//结束时间
+	@Transient
+	public String endTime;
 }
