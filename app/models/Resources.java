@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -49,4 +50,17 @@ public class Resources  extends GenericModel{
 	public String bizuser_id;
 	// 删除状态(1：正常 0：删除)
 	public String deleteflag;
+	
+	// 排序 0 升序 1 降序
+	@Transient
+	public String order_by_time;
+	// 排序 0 升序 1 降序
+	@Transient
+	public String order_by_price;
+	// 排序 0 升序 1 降序
+	@Transient
+	public String order_by_credit;
+	//翻页页码,不存数据库
+	@Transient
+	public Integer page;
 }

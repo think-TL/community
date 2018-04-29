@@ -127,6 +127,7 @@ public class IndexApi extends Controller {
 			userInfo.realname = user.realname.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "");
 			userInfo.birth = user.birth;
 			userInfo.deleteflag = "1";
+			userInfo.user_status = 0;
 			userInfo.credit = "100";
 			userInfo.credit_cmt = 0;
 			userInfo.add_time = Utils.getCurrentTime();

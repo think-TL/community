@@ -71,6 +71,7 @@ import controllers.util.HostType;
 import controllers.util.HttpUtil;
 import controllers.util.RedisUtil;
 import controllers.util.Utils;
+import models.Resources;
 import models.User;
 import play.Logger;
 import play.Play;
@@ -94,6 +95,148 @@ public class UserApi extends Controller {
 	private static DataSource ds = DB.getDataSource();
 	private static QueryRunner allRun = new QueryRunner(ds);
 	
+	/**
+	 * 忘记密码
+	 */
+	public static void missUserPwd() {
+		// 获取jedis
+		Jedis jedis = RedisUtil.getJedis();
+		try {
+			JsonObject jsonObject = new JsonObject();
+			User user = Utils.getBody(User.class);
+			
+			// 简单判断规范，不做详细判断，因为需求不清楚
+			if(user.user_password == null || TextUtils.isEmpty(user.user_password.trim())) {
+				// 关闭链接
+				RedisUtil.closeJedisPool(jedis);
+				jsonObject.addProperty("code", "0");
+				jsonObject.addProperty("msg", "密码不可为空");
+				renderJSON(jsonObject);
+			}
+			
+			User oldUser = user.find("user_id = ? AND user_password = ? ", user.user_id,user.old_pwd).first();
+			oldUser.user_password = user.user_password;
+			oldUser.upd_time = Utils.getCurrentTime();
+			oldUser.save();
+			
+			// 更新用户表信息到redis
+			// 把user对象转成map
+			Map<String, String> userInfo = Utils.beanToMap(oldUser);
+			// 放入redis
+			jedis.hmset(userInfo.get("user_id") + ":user:info", userInfo);
+						
+			// 关闭链接
+			RedisUtil.closeJedisPool(jedis);
+			jsonObject.addProperty("code", "1");
+			jsonObject.addProperty("msg", "忘记密码成功");
+			renderJSON(jsonObject);
+		} catch (Exception e) {
+			// 关闭链接
+			RedisUtil.closeJedisPool(jedis);
+			Logger.error("忘记密码出错"+ e.getMessage());
+			renderJSON(Utils.apiError());
+		}
+	}
+	
+	/**
+	 *  查看收藏
+	 */
+	public static void listCollection() {
+		try {
+			models.Collection collection = Utils.getBody(models.Collection.class);
+			JsonObject jsonObject = new JsonObject();
+			
+			StringBuffer wheres = new StringBuffer();
+			
+			wheres.append(" AND c.deleteflag = 1 AND r.deleteflag = 1  ");
+			
+			// 判断是否根据类别
+			if(collection != null && collection.name != null && !TextUtils.isEmpty(collection.name.trim())) {
+				wheres.append(" AND r.name like '%"+ Utils.getSecurityParm(collection.name.trim()) +"%'");
+			}
+			
+			// 查询公告，放入redis
+			String sql = "SELECT "
+					+ " c.id as cid,r.id as rid,r.name,r.credit_number,r.price "
+					+ "FROM t_collection c "
+					+ "INNER JOIN t_resources r ON r.id = c.resources_id "
+					+ "JOIN (select c.id from  t_collection c INNER JOIN t_resources r ON r.id = c.resources_id where 1=1 and c.user_id = ? "+wheres.toString()+ "order by c.add_time desc limit ?,10 ) l ON l.id = c.id "
+					+ "ORDER BY c.add_time desc ";
+			List list = allRun.query(sql, new MapListHandler(),collection.user_id,Utils.strMul(Utils.strSub(collection.page + "", "1") + "", "10"));
+			
+			jsonObject.addProperty("code", "1");
+			jsonObject.addProperty("msg", "用户查看收藏成功");
+			jsonObject.add("info", new Gson().toJsonTree(list));
+			renderJSON(jsonObject);
+		} catch (Exception e) {
+			Logger.error("用户查看收藏出错"+ e.getMessage());
+			renderJSON(Utils.apiError());
+		}
+	}
+	
+	/**
+	 * 用户删除收藏资源
+	 * {"id":"1","user_id":""}
+	 */
+	public static void delCollection(){
+		// 获取jedis
+		Jedis jedis = RedisUtil.getJedis();
+		try {
+			JsonObject jsonObject = new JsonObject();
+			models.Collection collection = Utils.getBody(models.Collection.class);
+			
+			allRun.update("update t_collection set deleteflag =0,upd_time = ? where id = ? and user_id = ? ",Utils.getCurrentTime(),collection.id,collection.user_id);
+			
+			// 关闭链接
+			RedisUtil.closeJedisPool(jedis);
+			// 返回数据
+			jsonObject.addProperty("code", "1");
+			jsonObject.addProperty("msg", "用户删除收藏资源成功");
+			renderJSON(jsonObject);
+		} catch (Exception e) {
+			// 关闭链接
+			RedisUtil.closeJedisPool(jedis);
+			Logger.error("用户删除收藏资源错误"+ e.getMessage());
+			renderJSON(Utils.apiError());
+		}
+	}
+	
+	/**
+	 * 用户收藏资源
+	 * {"resources_id":"1","user_id":""}
+	 */
+	public static void collectionResources(){
+		// 获取jedis
+		Jedis jedis = RedisUtil.getJedis();
+		try {
+			JsonObject jsonObject = new JsonObject();
+			models.Collection collection = Utils.getBody(models.Collection.class);
+			
+			List list = allRun.query("select id from t_collection where resources_id = ? and deleteflag = 1 and user_id = ?", new MapListHandler(),collection.resources_id,collection.user_id);
+			if(list.size() > 0) {
+				// 返回数据
+				jsonObject.addProperty("code", "0");
+				jsonObject.addProperty("msg", "你已收藏过此资源");
+				renderJSON(jsonObject);
+			}
+			
+			collection.add_time = Utils.getCurrentTime();
+			collection.deleteflag = "1";
+			collection.save();
+			
+			// 关闭链接
+			RedisUtil.closeJedisPool(jedis);
+			// 返回数据
+			jsonObject.addProperty("code", "1");
+			jsonObject.addProperty("msg", "用户收藏资源成功");
+			renderJSON(jsonObject);
+		} catch (Exception e) {
+			// 关闭链接
+			RedisUtil.closeJedisPool(jedis);
+			Logger.error("用户收藏资源错误"+ e.getMessage());
+			renderJSON(Utils.apiError());
+		}
+	}
 	/**
 	 * 用户传资料认证
 	 */
