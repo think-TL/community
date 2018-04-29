@@ -100,7 +100,7 @@ public class AdminMgr extends Controller {
 			}
 			String jsonStr = new Gson().toJsonTree(listAll).toString();
 			// 获取权限列表
-			//permissionList = IndexMgr.getPermission(jedis);
+			permissionList = IndexMgr.getPermission(jedis);
 			// 关闭链接
 			RedisUtil.closeJedisPool(jedis);
 			render(permissionList,jsonStr,roleId);
@@ -156,7 +156,7 @@ public class AdminMgr extends Controller {
 		Jedis jedis = RedisUtil.getJedis();
 		List permissionList = null;
 		try {
-			//permissionList = IndexMgr.getPermission(jedis);
+			permissionList = IndexMgr.getPermission(jedis);
 			// 关闭链接
 			RedisUtil.closeJedisPool(jedis);
 		} catch (Exception e) {
@@ -257,11 +257,10 @@ public class AdminMgr extends Controller {
 		List permissionList = null;
 		List roleList = null;
 		try {
-			//permissionList = IndexMgr.getPermission(jedis);
-			
+			permissionList = IndexMgr.getPermission(jedis);
 			String sql = "SELECT id,rolename FROM t_role WHERE deleteflag = 1 AND id <> 0";
 			roleList = run.query(sql, new MapListHandler());
-			
+			System.out.println("==="+roleList.toString());
 			// 关闭链接
 			RedisUtil.closeJedisPool(jedis);
 		} catch (Exception e) {
@@ -310,7 +309,6 @@ public class AdminMgr extends Controller {
 						+ " t_bizuser b "
 					+ " LEFT JOIN t_bizuser_role br ON b.id = br.user_id "
 					+ " LEFT JOIN t_role r ON r.id = br.role_id "
-					+ " WHERE br.role_id <> 0 "
 					+ " AND b.deleteflag = '1' ");
 			
 			StringBuffer wheres = new StringBuffer();
