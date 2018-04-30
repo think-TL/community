@@ -26,14 +26,6 @@ public class Order extends GenericModel{
 	public String user_id;
 	// 资源id
 	public String resources_id;
-	//卖家id
-	public String maiUser_id;
-	//卖家电话
-	public String phone;
-	//卖家名字
-	public String name;
-	//卖家地址
-	public String address;
 	// 新增时间
 	public String itime;
 	// 修改时间

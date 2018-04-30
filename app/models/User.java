@@ -17,9 +17,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.hibernate.annotations.GenericGenerator;
 
-import controllers.site.BlogMgr;
 import play.db.DB;
-import play.db.jpa.Blob;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import play.db.jpa.Model;
@@ -44,12 +42,8 @@ public class User extends GenericModel {
 	public String user_password;
 	// 用户认证标识 0 未认证 1 认证中 2 认证失败  3认证成功
 	public int user_status;
-	// 用户认证图片1
-	public Blob authentication_url1_blob;
 	// 用户认证图片1路径
 	public String authentication_url1;
-	// 用户认证图片2
-	public Blob authentication_url2_blob;
 	// 用户认证图片2路径
 	public String authentication_url2;
 	// 信用级别 0 未认证 1 信用一般 2 信用良好 3 信用优秀
@@ -68,9 +62,6 @@ public class User extends GenericModel {
 	public int sex;
 	//电话号码
 	public int iphone;
-	
-	//头像存储
-	public Blob headImg;
 	// 头像
 	public String head_img;
 	// 邮箱
