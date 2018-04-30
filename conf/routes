@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET     /                                       site.MobileWebMgr.mobileIndex
+GET     /                                       site.IndexMgr.index
 GET     /login                                  boss.loginmgr.login
 
 
@@ -15,6 +15,6 @@ GET     /favicon.ico                            404
 GET     /public/                                staticDir:public
 
 # Catch all
-POST       /m/{controller}/{action}                  api.{controller}.{action}
+*       /m/{controller}/{action}                  api.{controller}.{action}
 *       /w/{controller}/{action}                  site.{controller}.{action}
-*          /b/{controller}/{action}                  boss.{controller}.{action}
+*       /b/{controller}/{action}                  boss.{controller}.{action}

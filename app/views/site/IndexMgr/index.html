@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Intelligent & Convenience</title>
+        <link rel="stylesheet" href="@{'/public/stylesheets/index.css'}" />
+        <link rel="stylesheet" href="@{'/public/stylesheets/nav.css'}" />
+        <link rel="stylesheet" href="@{'/public/stylesheets/headTemplet.css'}" />
+        <link rel="stylesheet" href="@{'/public/stylesheets/footerTemplet.css'}" /> 
+	</head>
+	<body> 
+        <div class="bodychild" style="box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.2);">
+            <header>
+                <div id="fristBox">
+                    <div id="headBox">
+                        <p id="name">社区资源共享</p>
+                        <div id="topright">      
+                            <div class="language">
+                                 #{if user!=null}
+                                  <div class="dropdown">
+                                <a href="#" class="dropbtn"><strong>用户名:${user.user_name}</strong></a>
+                                <div class="dropdown-content">
+                                    <a href="/w/UserMgr/getUserByUserId?userid=${user.user_id}">个人中心</a>
+                                    <a href="#">我的订单</a>
+                                    <a href="#">我的收藏</a>
+                                    <a href="#">退出</a>
+                                </div>
+                            </div> 
+                        #{/if} 
+                        #{else}
+                            <p id="login">您还没有登录<a href="/w/LoginMgr/login" >登录</a>or<a href="/w/LoginMgr/registerUser">创建新账号</a></p>
+                        #{/else}
+                            </div>                       
+                            <div class="currency">退出</div>  
+                        </div>   
+                    </div>
+                </div>
+                <div id="secondBox">
+                            <div id="logo-wrapper">
+                                <div class="row">
+                                    <div id="logo" class="six-columns">
+                                        <a href="/"><img src="@{'/public/images/logo.png'}" alt="logo image"></a>
+                                        <span class="desc">| 社区资源共享</span>
+                                    </div>
+                                    <div class="right-six-columns">
+                                        <form id="searchform" action="#" method="get">
+                                            <input id="s" class="field" placeholder="根据资源名称搜索" name="s" type="text">
+                                            <a >
+                                                <input class="searchbutton" value="" type="submit" >
+                                            </a>
+                                        </form>
+                                        <div id="shopping-cart-wrapper">
+                                        <div id="shopping_cart">
+                                            收藏：
+                                            <a class="" href="">
+                                                <img src="@{'/public/images/order.png'}" style="width: 20px;height: 20px;">
+                                            </a>
+                                            订单：
+                                            <a class="" href="">
+                                                <img src="@{'/public/images/order.png'}" style="width: 20px;height: 20px;">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                <section id="navigation">
+                            <div id="container">
+                                <div class="row">
+                                    <nav id="nav-wrap" class="twelve-columns">
+                                        <ul id="sf-nav" class="sf-menu">
+                                            <li>
+                                                <a class="router-link-active" href="index.html">首页</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="html/product-grid.html">共享资源</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="html/blog.html">社区通告</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="html/about.html">关于我们</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="html/contact.html">联系我们</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                </section>
+                <div class="headline">
+                            <div class="row">
+                                <div class="twelve-columns">
+                                    <h1>分享是一种美德</h1>
+                            </div>
+                        </div>
+            </header>
+        <div id="outerslider">
+            <div id="pictureShow">
+                <img src="@{'/public/images/body1.jpg'}" alt="" id="bobyShow1">
+            </div>
+        </div>
+         <div id="outermain">
+            <div id="row2">
+                <section class="content">
+                    <div class="featured-products">
+                    <div class="featured-wrapper">
+                        <h2>最新产品</h2>
+                        <span></span>
+                    </div>
+
+                    </div>
+                    <hr>
+                    <div id="row3">
+                        <div class="prcture-products">
+                              #{list items:resour_list, as:'resourceList'}
+		                                <div class="one_thrid">
+		                                   <img src="${resourceList.imgurl}" alt="" class="borders">
+		                                </div>
+		                        #{/list}
+                            
+                    </div>
+                </div>
+                </section>
+
+                <section class="content">
+                        <div class="featured-products">
+                        <div class="featured-wrapper">
+                        </div>
+    
+                        </div>
+                        <hr>
+                        <div id="row3">
+                            <div class="prcture-products">
+                        </div>
+                    </div>
+                    </section>
+
+
+            </div>
+        </div>
+        
+        
+        <footer id="footBox">
+            <div id="footFont">
+                <p>Copyright @社区共享资源管理系统 <a href="http://www.baidu.com" target="_Blank">baidu</a> -Collect from <a href="http://www.cduestc.cn" target="_Blank">cduestc</a></p>
+            </div>
+        </footer> 
+        </div>
+	</body>
+</html>

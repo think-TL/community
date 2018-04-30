@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>login</title>
+        <link rel="stylesheet" href="@{'/public/stylesheets/headTemplet.css'}" />
+        <link rel="stylesheet" href="@{'/public/stylesheets/nav.css'}" /> 
+        <link rel="stylesheet" href="@{'/public/stylesheets/login.css'}" /> 
+        <link rel="stylesheet" href="@{'/public/stylesheets/footerTemplet.css'}" />     
+	</head>
+	<body>
+        <div id="bodychild" style="box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.2);">
+            <header>
+                        <div id="fristBox">
+                            <div id="headBox">
+                                <p id="name">社区资源共享</p>
+                                <div id="topright">      
+                                    <div class="language">
+                                  #{if user!=null}
+                           <p id="login">你的用户名为 ${user.user_name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;退出</p>
+                        #{/if} 
+                        #{else}
+                             <p id="login">您还没有登录<a href="/w/LoginMgr/login" >登录</a>or<a href="/w/LoginMgr/registerUser">创建账号</a></p>
+                        #{/else}
+                                    </div>
+                                    <!-- <div class="dropdown">
+                                        <a href="#" class="dropbtn"><strong>用户名</strong></a>
+                                        <div class="dropdown-content">
+                                            <a href="#">个人中心</a>
+                                            <a href="#">我的订单</a>
+                                            <a href="#">我的收藏</a>
+                                            <a href="#">退出</a>
+                                        </div>
+                                    </div> -->
+                                    <div class="currency">退出</div>    
+                                </div>
+                            </div>
+                        </div>
+                        <div id="secondBox">
+                            <div id="logo-wrapper">
+                                <div class="row">
+                                    <div id="logo" class="six-columns">
+                                         <a href="/w/IndexMgr/index"><img src="@{'/public/images/logo.png'}" alt="logo image"></a>
+                                        <span class="desc">| 社区资源共享</span>
+                                    </div>
+                                    <div class="right-six-columns">
+                                        <form id="searchform" action="#" method="get">
+                                            <input id="s" class="field" placeholder="根据资源名称搜索" name="s" type="text">
+                                            <a >
+                                                <input class="searchbutton" value="" type="submit" >
+                                            </a>
+                                        </form>
+                                        <div id="shopping-cart-wrapper">
+                                        <div id="shopping_cart">
+                                            收藏：
+                                            <a class="" href="">
+                                                <img src="@{'/public/images/love.png'}" style="width: 20px;height: 20px;">
+                                            </a>
+                                            订单：
+                                            <a class="" href="">
+                                                <img src="@{'/public/images/order.png'}" style="width: 20px;height: 20px;">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <section id="navigation">
+                            <div id="container">
+                                <div class="row">
+                                    <nav id="nav-wrap" class="twelve-columns">
+                                        <ul id="sf-nav" class="sf-menu">
+                                             <li>
+                                                <a class="router-link-active" href="/w/IndexMgr/index">首页</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="/w/ProductGridMgr/product">共享资源</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="/w/BlogMgr/blog">社区通告</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="/w/AboutMgr/about">关于我们</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="/w/ContactMgr/contact">联系我们</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="headline">
+                            <div class="row">
+                                <div class="twelve-columns">
+                                    <h1>分享是一种美德</h1>
+                            </div>
+                        </div>
+            </header>
+        <div id="outermain">
+            <div class="container">
+            <div class="row4">
+                <section id="maincontent" class="ten cloumns">
+                    <div class="padcontent">
+                        <section id="login" class="content">
+                            <div class="breadcrumb">
+                                Home/
+                                <a>登录</a>
+                            </div>
+                            <h1 class="pagetitle">登录</h1>
+                            <div id="login-process">
+                                <span class="frist">♢</span>
+                                <span >注册</span>
+                                <span class="active">登录</span>
+                                <span>认证</span>
+                                <span>领用</span>
+                                <span class="last">退还</span>
+                            </div>
+                            <div class="one-half columns" style="text-align: center;">
+                                <h3>登录</h3>
+                                   <form id="loginfrom1" method="POST" action="/w/LoginMgr/loginUser">
+                                    <fieldset id="loginfrom">
+                                        <label style="margin-left: -110px;">账　号：</label>
+                                        <br>
+                                        <input type="text" style="margin-left: 160px;border: 1px solid gray;width: 300px;" name="username">
+                                        <!-- <input type="text" style="margin-left: 160px;border: 1px solid rgb(245, 126, 126);width: 300px;"> -->
+                                        <br>
+                                        <label style="margin-left: -110px;">密　码：</label>
+                                        <br>
+                                        <input id="test-left" type="password" style="width: 300px" name="password">
+                                        
+                                        <!-- <input id="test-left" type="password" style="width: 300px;border: 1px solid rgb(245,126,126)" > -->
+                                        <br>
+                                    </fieldset>
+                                  
+                                    <input id="button" value="登录" style="margin-left: 15px;"type="submit">
+                                    <br>
+                                    <a style="margin-left: 20px;">忘记密码？</a>
+                                </form>
+
+                            </div>
+                           
+                        #{if msg!=null}
+                          <div class="errorp">
+                                <p id="error-p">！用户名不存在或用户名输入错误</p>
+                                <p >！密码错误</p>
+                            </div>
+                        #{/if} 
+                            <div class="featured-products">
+                                <div class="header-wrapper">
+                                    <h2>你可能喜欢：</h2>
+                                    <span></span>
+                                </div>
+                            <div class="row5">
+                                <div class="one_fourth columns">
+                                    <div class="product-wrapper">
+                                        <a class="more1" href="product-details">
+                                              <img src="@{'/public/images/p-31.jpg'}" alt="">
+                                        </a>
+                                        <h3>
+                                            <a class="more1" href="product-details">watch</a>
+                                        </h3>
+                                        <div class="price-cart-wrapper">
+                                            <div class="price">120</div>
+                                            <div class="cart">
+                                                <a class="more" href="product-details">more</a>|
+                                                <a class="buy" href="product-details"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="one_fourth columns">
+                                        <div class="product-wrapper">
+                                            <a class="more1" href="product-details">
+                                                <img src="../images/p-31.jpg" alt="">
+                                            </a>
+                                            <h3>
+                                                <a class="more1" href="product-details">watch</a>
+                                            </h3>
+                                            <div class="price-cart-wrapper">
+                                                <div class="price">120</div>
+                                                <div class="cart">
+                                                    <a class="more" href="product-details"></a>|
+                                                    <a class="buy" href="product-details"></a>
+                                                </div>
+                                            </div>   
+                                        </div>
+                                    </div>
+                                    <div class="one_fourth columns">
+                                        <div class="product-wrapper">
+                                            <a class="more1" href="product-details">
+                                                <img src="../images/p-31.jpg" alt="">
+                                            </a>
+                                            <h3>
+                                                <a class="more1" href="product-details">watch</a>
+                                            </h3>
+                                            <div class="price-cart-wrapper">
+                                                <div class="price">120</div>
+                                                <div class="cart">
+                                                     <a class="more" href="product-details">more</a>|
+                                                    <a class="buy" href="product-details">buy</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="one_fourth columns">
+                                        <div class="product-wrapper">
+                                            <a class="more1" href="product-details">
+                                                <img src="../images/p-31.jpg" alt="">
+                                            </a>
+                                            <h3>
+                                                   <a class="more1" href="product-details">watch</a>
+                                            </h3>
+                                            <div class="price-cart-wrapper">
+                                                <div class="price">120</div>
+                                                <div class="cart">
+                                                    <a class="more" href="product-details">more</a>|
+                                                    <a class="buy" href="product-details">buy</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+                <aside class="two columns">
+                    <div class="sidebar">
+                        <ul>
+                            <li class="widget-container">
+                                <h2 class="widget-title">
+                                    找你所爱：
+                                    <button class="el-button" type="submit">
+                                        <span>查找</span>
+                                    </button>
+                                </h2>
+                                <div class="upload-demo">
+                                    <div class="el-upload">
+                                        <button class="el-button el-button-up" type="submit">
+                                            <span>上传</span>
+                                        </button>
+                                    </div>
+                                    <div class="el-upload_tip">只能上传jpg/png文件</div>
+                                    <ul class="el-load-list"></ul>
+                                </div>
+                                <hr>
+                                <ul class="sp-weiget"></ul>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </div>
+        </div>
+        <footer id="footBox">
+                <div id="footFont">
+                    <p>Copyright @社区共享资源管理系统 <a href="http://www.baidu.com" target="_Blank">baidu</a> -Collect from <a href="http://www.cduestc.cn" target="_Blank">cduestc</a></p>
+                </div>
+        </footer> 
+    </div>
+	</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>userIChange</title>
+<link rel="stylesheet" href="@{'/public/stylesheets/userIChange.css'}" />
+<link rel="stylesheet" href="@{'/public/stylesheets/headTemplet.css'}" />
+<link rel="stylesheet" href="@{'/public/stylesheets/footerTemplet.css'}" />
+</head>
+<body>
+	<div class="bodychild"
+		style="box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);">
+		<header>
+			<div id="fristBox">
+				<div id="headBox">
+					<p id="name">社区资源共享</p>
+					<div id="topright">
+						<!-- <div class="language">
+                                        您还没有登录
+                                        <a class="" href="login.html">
+                                            <strong>登录</strong>
+                                        </a>
+                                        or
+                                        <a class="" href="register.html">
+                                            <strong>创建新账号</strong>
+                                        </a>
+                                    </div> -->
+						<div class="dropdown">
+							<a href="#" class="dropbtn"><strong>${user.realname}</strong></a>
+							<div class="dropdown-content">
+								<a href="/w/UserMgr/userIchangeGetByUserId?userid=${user.user_id}">信息修改</a>|
+								 <a href="/w/UserMgr/updateUserPage?userid=${user.user_id}">密码修改</a>|
+                                 <a href="/w/UserMgr/userApprove?userid=${user.user_id}">用户认证</a> <a href="#">退出</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="secondBox">
+				<div id="logo-wrapper">
+					<div class="row">
+						<div id="logo" class="six-columns">
+							<a href="/"><img src="@{'/public/images/logo.png'}"
+								alt="logo image"></a> <span class="desc">| 社区资源共享</span>
+						</div>
+						<div class="right-six-columns">
+							<form id="searchform" action="#" method="get">
+								<input id="s" class="field" placeholder="根据资源名称搜索" name="s"
+									type="text"> <a> <input class="searchbutton"
+									value="" type="submit">
+								</a>
+							</form>
+							<div id="shopping-cart-wrapper">
+								<div id="shopping_cart">
+									收藏： <a class="" href=""> <img
+										src="@{'/public/images/love.png'}"
+										style="width: 20px; height: 20px;">
+									</a> 订单： <a class="" href=""> <img
+										src="@{'/public/images/order.png'}"
+										style="width: 20px; height: 20px;">
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<section id="navigation">
+				<div id="container">
+					<div class="row">
+						<nav id="nav-wrap" class="twelve-columns">
+							<ul id="sf-nav" class="sf-menu">
+								<li><a class="router-link-active" href="/w/IndexMgr/index">首页</a>
+								</li>
+								<li><a class="" href="/w/ProductGridMgr/product">共享资源</a></li>
+								<li><a class="" href="/w/BlogMgr/blog">社区通告</a></li>
+								<li><a class="" href="/w/AboutMgr/about">关于我们</a></li>
+								<li><a class="" href="/w/ContactMgr/contact">联系我们</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</section>
+			<div class="headline">
+				<div class="row">
+					<div class="twelve-columns">
+						<h1>分享是一种美德</h1>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div id="mainBox">
+			<div id="personal-profile">
+				<div class="nameBox">
+					<p>用户名：</p>
+					<span>${user.realname}</span>
+				</div>
+				<div class="nameBox">
+					<p>信用等级：</p>
+					<span>${user.credit_cmt}</span>
+				</div>
+				<div class="nameBox">
+					<p>信用值：</p>
+					<span>${user.credit}</span>
+				</div>
+			</div>
+
+			<div id="personal-Box">
+				<div id="user-module">
+					<div class="moduleBox">
+						<a href="userInformation.html" id="cleck">个人中心</a> <a href="#">我的订单</a>
+						<a href="#">我的收藏</a> <a
+							href="/w/ResourceMgr/index?user_id=${user.user_id}">发布资源</a>
+					</div>
+				</div>
+				<div id="user-detailed">
+					<div id="detailed-top">
+						<div id="detailed-top-left">
+							<span>信息修改</span>
+						</div>
+						<div id="detailed-top-right">
+							<a href="/w/UserMgr/userIchangeGetByUserId?userid=${user.user_id}">信息修改</a>|
+                                <a href="/w/UserMgr/updateUserPage?userid=${user.user_id}">密码修改</a>|
+                                <a href="/w/UserMgr/userApprove?userid=${user.user_id}">用户认证</a>
+						</div>
+					</div>
+					<div id="formBox">
+						<form action="/w/UserMgr/updateUserInfo" method="post" enctype="multipart/form-data">
+							<div class="head-portrait">
+								<img src="${user.head_img}"> <a class="upload">[更换头像]
+									<input class="change" type="file" multiple="multiple" value="" name="user.headImg">
+								</a>
+							</div>
+							<input type="hidden" class="show" value="${user.user_id}"
+								name="user.user_id">
+
+							<div class="item">
+								<span>昵称 ：</span> <input type="text" class="show"
+									value="${user.user_name}" name="user.user_name">
+								<p>！用户名由中文、字母和数字组成</p>
+							</div>
+							<div class="item">
+								<span>邮 箱：</span> <input type="email" class="show"
+									value="${user.emali}" name="user.emali">
+								<p>！请检查您的e-mail格式</p>
+							</div>
+
+							<div class="item"> <!-- 这里需要出现选项狂 -->
+								<span>生 日：</span> <input type="text" class="show"
+									value="${user.birth}" name="user.birth">
+							</div>
+							<div class="item">
+								<span>地 址：</span> <input type="text" class="show"
+									value="${user.address}" name="user.address">
+							</div>
+							<div id="detailed-bottom">
+								<button type="submit">提交</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer id="footBox">
+			<p>
+				Copyright @社区共享资源管理系统 <a href="http://www.baidu.com" target="_Blank">baidu</a>
+				-Collect from <a href="http://www.cduestc.cn" target="_Blank">cduestc</a>
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

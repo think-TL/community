@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>register</title>
+        <link rel="stylesheet" href="@{'/public/stylesheets/register.css'}" />
+        <link rel="stylesheet" href="@{'/public/stylesheets/nav.css'}" />
+        <link rel="stylesheet" href="@{'/public/stylesheets/headTemplet.css'}" />
+         <link rel="stylesheet" href="@{'/public/stylesheets/footerTemplet.css'}" />
+	</head>
+<body> 
+        <div class="bodychild" style="box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.2);">
+            <header>
+                <div id="fristBox">
+                            <div id="headBox">
+                                <p id="name">社区资源共享</p>
+                                <div id="topright">      
+                                    <div class="language">
+                                        您还没有登录
+                                        <a class="" href="login.html">
+                                            <strong>登录</strong>
+                                        </a>
+                                        or
+                                        <a class="" href="register.html">
+                                            <strong>创建新账号</strong>
+                                        </a>
+                                    </div>
+                                    <!-- <div class="dropdown">
+                                        <a href="#" class="dropbtn"><strong>用户名</strong></a>
+                                        <div class="dropdown-content">
+                                            <a href="#">个人中心</a>
+                                            <a href="#">我的订单</a>
+                                            <a href="#">我的收藏</a>
+                                            <a href="#">退出</a>
+                                        </div>
+                                    </div> -->
+                                    <div class="currency">退出</div>    
+                                </div>
+                            </div>
+                </div>
+                        <div id="secondBox">
+                            <div id="logo-wrapper">
+                                <div class="row">
+                                    <div id="logo" class="six-columns">
+                                        <a href="/"><img src="../images/logo.png" alt="logo image"></a>
+                                        <span class="desc">| 社区资源共享</span>
+                                    </div>
+                                    <div class="right-six-columns">
+                                        <form id="searchform" action="#" method="get">
+                                            <input id="s" class="field" placeholder="根据资源名称搜索" name="s" type="text">
+                                            <a >
+                                                <input class="searchbutton" value="" type="submit" >
+                                            </a>
+                                        </form>
+                                        <div id="shopping-cart-wrapper">
+                                        <div id="shopping_cart">
+                                            收藏：
+                                            <a class="" href="">
+                                                <img src="../images/love.png" style="width: 20px;height: 20px;">
+                                            </a>
+                                            订单：
+                                            <a class="" href="">
+                                                <img src="../images/order.png" style="width: 20px;height: 20px;">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <section id="navigation">
+                            <div id="container">
+                                <div class="row">
+                                    <nav id="nav-wrap" class="twelve-columns">
+                                        <ul id="sf-nav" class="sf-menu">
+                                              <li>
+                                                <a class="router-link-active" href="/w/IndexMgr/index">首页</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="/w/ProductGridMgr/product">共享资源</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="/w/BlogMgr/blog">社区通告</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="/w/AboutMgr/about">关于我们</a>
+                                            </li>
+                                            <li>
+                                                <a class="" href="/w/ContactMgr/contact">联系我们</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="headline">
+                            <div class="row">
+                                <div class="twelve-columns">
+                                    <h1>分享是一种美德</h1>
+                            </div>
+                        </div>
+            </header>           
+        <div id="outermain">
+            <div class="row4">
+                <section id="maincontent" class="ten cloumns">
+                    <div class="padcontent">
+                        <section id="loginshow" class="content1">
+                            <div class="breadcrumb">
+                                <a href="../index.html">Home</a>
+                                /注册
+                            </div>
+                            <h1 class="pagetitle">注册</h1>
+                            <div id="login-process">
+                                <span class="frist">♢</span>
+                                <span class="active">注册</span>
+                                <span>登录</span>
+                                <span>认证</span>
+                                <span>领用</span>
+                                <span class="last">退还</span>
+                            </div>
+                            <div class="one-half columns" style="text-align: center;">
+                                <h3>注册：创建您的账号</h3>
+                                 <form id="loginfrom1" method="POST" action="register">
+                                    <fieldset>
+                                        <div style="width: 355px;height: 66px;float: left;">
+                                            <label style="margin-left: 100px;">账　号：</label>
+                                            <br>
+                                            <div >
+                                                <input type="text" class="regist" class="input" name="user.user_name" >
+                                                <!-- <input type="text" class="regist" class="input" style="border: 1px solid salmon;" > -->
+                                                <br>
+                                            </div>
+                                        </div>
+                                        <!-- <div style="width: 155px;margin-left:200px;text-align:left;height: 66px;float: right;color:salmon;">
+                                            <p>用户名由中文、字母和数字组成</p>
+                                        </div> -->
+                                        <div style="width: 355px;height: 66px">
+                                            <label style="margin-left: 100px;">密  　码：</label>
+                                            <br>
+                                            <div >
+                                                 <input type="text" class="regist" id="input" name="user.user_password">
+                                                <!-- <input type="text" class="regist" class="input" style="border: 1px solid salmon;" > -->
+                                                <br>
+                                            </div>
+                                        </div>
+                                        <!-- <div style="width: 155px;margin-left:200px;text-align:left;height: 66px;float: right;color:salmon;">
+                                            <p>密码不能少于六位</p>
+                                        </div> -->
+                                        <div style="width: 355px;height: 66px">
+                                            <!-- <label style="margin-left: 100px;"></label> -->
+                                            <br>
+                                            <div >
+                                                <!-- <input type="text" class="regist" id="input"> -->
+                                                <!-- <input type="text" class="regist" class="input" style="border: 1px solid salmon;" > -->
+                                                <br>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="width: 355px;height: 66px">
+                                            <label style="margin-left: 100px;">Email：</label>
+                                            <br>
+                                            <div >
+                                               <input type="text" class="regist" id="input" name="user.emali">
+                                                <!-- <input type="text" class="regist" class="input" style="border: 1px solid salmon;" > -->
+                                                <br>
+                                            </div>
+                                        </div>
+                                        <!-- <div style="width: 155px;margin-left:200px;text-align:left;height: 66px;float: right;color:salmon;">
+                                            <p>email格式不正确 例：celery2018@163.com</p>
+                                        </div> -->
+                                        <div style="width: 355px;height: 66px">
+                                            <label style="margin-left: 100px;">身份证：</label>
+                                            <br>
+                                            <div >
+                                                <input type="text" class="regist" id="input" name="user.id_card">
+                                                <!-- <input type="text" class="regist" class="input" style="border: 1px solid salmon;" > -->
+                                                <br>
+                                            </div>
+                                        </div>
+                                        <!-- <div style="width: 155px;margin-left:200px;text-align:left;height: 66px;float: right;color:salmon;">
+                                            <p>请输入正确的身份证</p>
+                                        </div> -->
+                                        <div style="width: 355px;height: 66px">
+                                            <label style="margin-left: 100px;">居住地址：</label>
+                                            <br>
+                                            <div >
+                                                 <input type="text" class="regist" id="input" name="user.address">
+                                                <br>
+                                            </div>
+                                        </div>
+                                        <div style="width: 355px;height: 66px">
+                                                <label style="margin-left: 100px;">性　别：</label>
+                                                <br>
+                                                <div >
+                                                      <input type="text" class="regist" id="input" name="user.sex">
+                                                    <br>
+                                                </div>
+                                            </div>
+                                        <div style="width: 355px;height: 66px">
+                                            <label style="margin-left: 100px;">生　日：</label>
+                                            <br>
+                                            <div >
+                                               <input type="text" class="regist" id="input" name="user.birth">
+                                                <br>
+                                            </div>
+                                        </div> 
+                                    </fieldset>
+                                </form>                           
+                                <div  id="registerBox">
+                                    <button class="button" type="submit" value="已有账号，去登录" >创建账户</button>
+                                    <a class="" href="login.html">
+                                        <button class="button" type="submit" value="已有账号，去登录" >已有账号，去登录</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+        
+        <footer id="footBox">
+                <div id="footFont">
+                    <p>Copyright @社区共享资源管理系统 <a href="http://www.baidu.com" target="_Blank">baidu</a> -Collect from <a href="http://www.cduestc.cn" target="_Blank">cduestc</a></p>
+                </div>
+        </footer> 
+        </div>
+	</body>
+</html>
