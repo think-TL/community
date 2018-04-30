@@ -26,6 +26,22 @@ public class Order extends GenericModel{
 	public String user_id;
 	// 资源id
 	public String resources_id;
+	// 资源名字
+	public String resources_name;
+	// 资源类型
+	public String resources_type_id;
+	// 资源描述
+	public String resources_cmt;
+	// 资源图片
+	public String resources_img1;
+	// 资源图片
+	public String resources_img2;
+	// 资源图片
+	public String resources_img3;
+	// 资源价格
+	public double price;
+	// 资源信用值
+	public String resources_creditnumber;
 	// 新增时间
 	public String itime;
 	// 修改时间

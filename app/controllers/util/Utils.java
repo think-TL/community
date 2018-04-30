@@ -95,6 +95,25 @@ import redis.clients.jedis.Jedis;
 
 public class Utils extends Controller {
 
+	
+	/**
+	 * 比较大小 如果v1 大于v2 则 返回true 否则false
+	 * 
+	 * @param v1
+	 * @param v2
+	 * @return
+	 */
+	public static boolean strcompareTo(String v1, String v2) {
+		BigDecimal b1 = new BigDecimal(v1);
+		BigDecimal b2 = new BigDecimal(v2);
+		int bj = b1.compareTo(b2);
+		boolean res;
+		if (bj > 0)
+			res = true;
+		else
+			res = false;
+		return res;
+	}
 	/**
 	 * 得到某个时间点后N天后的日期
 	 * 
