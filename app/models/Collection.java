@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -34,10 +33,4 @@ public class Collection extends GenericModel{
 	public String upd_time;
 	// 删除状态(1：正常 0：删除)
 	public String deleteflag;
-	//翻页页码,不存数据库
-	@Transient
-	public Integer page;
-	// 名称
-	@Transient
-	public String name;
 }
