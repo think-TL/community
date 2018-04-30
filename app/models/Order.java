@@ -38,4 +38,12 @@ public class Order extends GenericModel{
 	public String shipping_status;
 	// 删除状态(1：正常 0：删除)
 	public String deleteflag;
+	//卖家id
+	public String maiuser_id;
+	//卖家电话
+	public String phone;
+	//卖家名字
+	public String name;
+	//卖家地址
+	public String address;
 }
