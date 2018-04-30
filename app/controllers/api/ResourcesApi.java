@@ -98,6 +98,38 @@ public class ResourcesApi extends Controller {
 	private static QueryRunner allRun = new QueryRunner(ds);
 	
 	/**
+	 *  查看资源详情
+	 */
+	public static void getResourcesById() {
+		try {
+			Resources resources = Utils.getBody(Resources.class);
+			JsonObject jsonObject = new JsonObject();
+			
+			StringBuffer wheres = new StringBuffer();
+			
+			wheres.append(" AND r.deleteflag = 1 ");
+			
+			// 查询公告，放入redis
+			String sql = "SELECT "
+					+ " r.id,r.name,r.add_time,r.credit_number,r.price,r.img1,r.img2,r.img3,r.cmt,u.user_name "
+					+ "FROM t_resources r "
+					+ "INNER JOIN t_user u ON r.user_id = u.user_id "
+					+ "WHERE 1=1 "
+					+ "AND r.id = ? " + wheres.toString()
+					+ "ORDER BY r.add_time desc ";
+			List list = allRun.query(sql, new MapListHandler(),resources.id);
+			
+			jsonObject.addProperty("code", "1");
+			jsonObject.addProperty("msg", "用户查看自己发布的资源成功");
+			jsonObject.add("info", new Gson().toJsonTree(list));
+			renderJSON(jsonObject);
+		} catch (Exception e) {
+			Logger.error("用户查看自己发布的资源出错"+ e.getMessage());
+			renderJSON(Utils.apiError());
+		}
+	}
+	
+	/**
 	 * 删除资源
 	 * {""user_id":"","id":""}
 	 */
