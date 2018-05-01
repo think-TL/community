@@ -121,7 +121,7 @@ public class PageApi extends Controller {
 			
 			// 判断是否根据时间查询
 			if(notice != null && notice.endTime != null && !TextUtils.isEmpty(notice.endTime.trim())){
-				wheres.append(" AND n.add_time < " + Utils.getSecurityParm(notice.endTime+"000000"));
+				wheres.append(" AND n.add_time < " + Utils.afterNDayByParam(notice.endTime+"000000", 1));
 			}
 			
 			// 查询公告，放入redis

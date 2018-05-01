@@ -381,7 +381,7 @@ public class ResourcesApi extends Controller {
 			jsonObject.add("info", new Gson().toJsonTree(resourcesType));
 			renderJSON(jsonObject);
 		} catch (Exception e) {
-			Logger.error("展示资源类型s错误"+ e.getMessage());
+			Logger.error("展示资源类型错误"+ e.getMessage());
 			renderJSON(Utils.apiError());
 		}
 	}

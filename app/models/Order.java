@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -39,7 +40,7 @@ public class Order extends GenericModel{
 	// 资源图片
 	public String resources_img3;
 	// 资源价格
-	public double price;
+	public double resources_price;
 	// 资源信用值
 	public String resources_creditnumber;
 	// 新增时间
@@ -60,6 +61,20 @@ public class Order extends GenericModel{
 	public String phone;
 	//卖家名字
 	public String name;
+	//消费者名字
+	public String consumename;
 	//卖家地址
 	public String address;
+	//订单单号
+	public String orderno;
+	
+	//翻页页码,不存数据库
+	@Transient
+	public Integer page;
+	//不存数据库
+	@Transient
+	public String startTime;
+	//不存数据库
+	@Transient
+	public String endTime;
 }
